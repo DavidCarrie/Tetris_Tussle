@@ -7,6 +7,7 @@ const COLORS = [
   "#02EF00",
   "#F00100",
 ];
+
 //setup the canvas
 function setup() {
   createCanvas(windowWidth, windowHeight);

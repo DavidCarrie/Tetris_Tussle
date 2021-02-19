@@ -26,6 +26,9 @@ class Tetromino {
   getRotation() {
     return this.rotation;
   }
+  rotate() {
+    this.rotation = (this.rotation + 1) % 4;
+  }
   getShadow() {
     return this.shadow;
   }
@@ -47,32 +50,5 @@ class Tetromino {
   //hard drop
   drop(y) {
     this.position[1] += y;
-  }
-
-  //rotate the current tetromino
-  rotate(direction) {
-    if (direction === "CW") {
-      //rotate clockwise
-      for (let i = 0; i < 2; i++) {
-        for (let j = i; j < 4 - i - 1; j++) {
-          let temp = this.state[i][j];
-          this.state[i][j] = this.state[3 - j][i];
-          this.state[3 - j][i] = this.state[3 - i][3 - j];
-          this.state[3 - i][3 - j] = this.state[j][3 - i];
-          this.state[j][3 - i] = temp;
-        }
-      }
-    } else {
-      // rotate counter clockwise
-      for (let i = 0; i < 2; i++) {
-        for (let j = i; j < 3 - i; j++) {
-          let temp = this.state[i][j];
-          this.state[i][j] = this.state[j][3 - i];
-          this.state[j][3 - i] = this.state[3 - i][3 - j];
-          this.state[3 - i][3 - j] = this.state[3 - j][i];
-          this.state[3 - y][i] = temp;
-        }
-      }
-    }
   }
 }
