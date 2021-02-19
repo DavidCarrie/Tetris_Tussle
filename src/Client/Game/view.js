@@ -15,23 +15,15 @@ function setup() {
 }
 //update the screen
 function draw() {}
-// /*
-// function getState() {
-//   return {
-//     boardState= board.getBoardState();
-//     ghostPos = currTetromino.getGhost();
-//     currPos = currTetromino.getPosition();
-//     currState = currTetromino.getState();
-//     clr = currTetromino.getShape();
-//   };
-// }*/
+
 function display(gameState) {
   let unit = windowHeight / 25;
   let topLeft = [windowWidth / 2 - 5 * unit, windowHeight / 2 - 10 * unit];
   let board = gameState.boardState;
-  let shadowPos = gameState.shadowPos;
-  let currPos = gameState.currPos;
-  let currState = gameState.currState;
+  let shadow = gameState.shadow;
+  let position = gameState.position;
+  let rotation = gameState.rotation;
+  let shape = gameState.shape;
   let clr = gameState.clr;
   clear();
   drawBoard(unit);
@@ -53,18 +45,18 @@ function display(gameState) {
   //draw the current tetromino and its shadow
   for (let y = 0; y < 4; y++) {
     for (let x = 0; x < 4; x++) {
-      if (currState[y][x]) {
+      if (shape[rotation] & (0x8000 >> (y * 4 + x))) {
         drawBlock(
-          topLeft[0] + (currPos[0] + x) * unit,
-          topLeft[1] + (currPos[1] + y) * unit,
+          topLeft[0] + (position[0] + x) * unit,
+          topLeft[1] + (position[1] + y) * unit,
           2,
           255,
           COLORS[clr],
           unit
         );
         drawBlock(
-          topLeft[0] + (currPos[0] + x) * unit,
-          topLeft[1] + (shadowPos + y) * unit,
+          topLeft[0] + (position[0] + x) * unit,
+          topLeft[1] + (shadow + y) * unit,
           2,
           255,
           "none",

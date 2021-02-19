@@ -3,6 +3,7 @@ let currentTetromino;
 let interval;
 let lose;
 let paused;
+
 function tick() {
   if (!board.checkCollision(currentTetromino, [0, 1])) {
     currentTetromino.gameTick();

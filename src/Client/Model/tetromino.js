@@ -1,55 +1,18 @@
 const SHAPES = [
-  [
-    //I
-    [1, 1, 1, 1],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ], //Square
-  [
-    [0, 1, 1, 0],
-    [0, 1, 1, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ], //T
-  [
-    [1, 1, 1, 0],
-    [0, 1, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ], //L
-  [
-    [0, 1, 0, 0],
-    [0, 1, 0, 0],
-    [0, 1, 1, 0],
-    [0, 0, 0, 0],
-  ], //J
-  [
-    [0, 1, 0, 0],
-    [0, 1, 0, 0],
-    [1, 1, 0, 0],
-    [0, 0, 0, 0],
-  ], //S
-  [
-    [0, 1, 1, 0],
-    [1, 1, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ], //Z
-  [
-    [1, 1, 0, 0],
-    [0, 1, 1, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ],
+  [0x4640, 0x0e40, 0x4c40, 0x4e00], // 'T'
+  [0x8c40, 0x6c00, 0x8c40, 0x6c00], // 'S'
+  [0x4c80, 0xc600, 0x4c80, 0xc600], // 'Z'
+  [0x4444, 0x0f00, 0x4444, 0x0f00], // 'I'
+  [0x44c0, 0x8e00, 0xc880, 0xe200], // 'J'
+  [0x88c0, 0xe800, 0xc440, 0x2e00], // 'L'
+  [0xcc00, 0xcc00, 0xcc00, 0xcc00], // 'O'
 ];
 
 class Tetromino {
   constructor() {
     this.shape = Math.floor(Math.random() * 7);
     this.state = SHAPES[this.shape];
-    this.position = [3, 0];
-    this.shadow = 0;
+    (this.rotation = 0), (this.shadow = 0), (this.position = [3, 0]);
   }
   getPosition() {
     return this.position;
@@ -59,6 +22,9 @@ class Tetromino {
   }
   getState() {
     return this.state;
+  }
+  getRotation() {
+    return this.rotation;
   }
   getShadow() {
     return this.shadow;
