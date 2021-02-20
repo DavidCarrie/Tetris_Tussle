@@ -47,14 +47,20 @@ function display(gameState) {
   for (let y = 0; y < 4; y++) {
     for (let x = 0; x < 4; x++) {
       if (shape[rotation] & (0x8000 >> (y * 4 + x))) {
-        drawBlock(
-          topLeft[0] + (position[0] + x) * unit,
-          topLeft[1] + (position[1] + y) * unit,
-          2,
-          255,
-          COLORS[clr],
-          unit
-        );
+        if (
+          position[1] + y >= 0 &&
+          position[0] + x >= 0 &&
+          position[0] + x < 20
+        ) {
+          drawBlock(
+            topLeft[0] + (position[0] + x) * unit,
+            topLeft[1] + (position[1] + y) * unit,
+            2,
+            255,
+            COLORS[clr],
+            unit
+          );
+        }
         drawBlock(
           topLeft[0] + (position[0] + x) * unit,
           topLeft[1] + (shadow + y) * unit,
