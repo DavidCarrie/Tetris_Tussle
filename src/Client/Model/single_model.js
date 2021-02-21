@@ -1,8 +1,9 @@
 let board;
 let currentTetromino;
 let interval;
-let lose;
-let paused;
+//todo
+// let lose;
+// let paused;
 
 function tick() {
   if (!board.checkCollision(currentTetromino, [0, 1], 0)) {
@@ -10,7 +11,7 @@ function tick() {
   } else {
     board.addToBoard(currentTetromino);
     currentTetromino = new Tetromino();
-    currentTetromino.setShadow(board.getShadow(currentTetromino));
+    currentTetromino.setShadow(board.hardDrop(currentTetromino));
   }
   display(getState());
 }
@@ -21,11 +22,10 @@ function newTetromino() {
 }
 function getState() {
   return {
-    boardState: board.boardState,
+    board: board.elems,
     shadow: currentTetromino.getShadow(),
     position: currentTetromino.getPosition(),
-    rotation: currentTetromino.getRotation(),
-    shape: currentTetromino.getState(),
+    shape: currentTetromino.getState()[currentTetromino.getRotation()],
     clr: currentTetromino.getShape(),
   };
 }
@@ -48,25 +48,25 @@ function keyPress(key) {
       currentTetromino.rotate();
     }
   } else if (key === "drop") {
-    board.hardDrop(currentTetromino);
+    currentTetromino.drop(board.hardDrop(currentTetromino));
     board.addToBoard(currentTetromino);
     currentTetromino = new Tetromino();
-    //clear lines
   }
   if (key !== "down")
-    currentTetromino.setShadow(board.getShadow(currentTetromino));
+    currentTetromino.setShadow(board.hardDrop(currentTetromino));
   display(getState());
 }
 
-function playButtonClicked() {
-  newGame();
-  document.getElementById("playbutton").disabled = true;
-}
+// function singlePlayer() {
+//   document.getElementById("playbutton").disabled = true;
+//   newGame();
+// }
+
 function newGame() {
   clearInterval(interval);
   board = new Board();
   currentTetromino = new Tetromino();
-  currentTetromino.setShadow(board.getShadow(currentTetromino));
+  currentTetromino.setShadow(board.hardDrop(currentTetromino));
   lose = false;
   paused = false;
   interval = setInterval(tick, 1000);

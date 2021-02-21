@@ -3,18 +3,18 @@ const COLS = 10;
 
 class Board {
   constructor() {
-    // initialize an empty board
-    this.boardState = [];
+    // initialize an empty elems
+    this.elems = [];
     for (let i = 0; i < ROWS; ++i) {
-      this.boardState.push([]);
+      this.elems.push([]);
       for (let j = 0; j < COLS; ++j) {
-        this.boardState[i].push({ filled: 0, color: "#000000" });
+        this.elems[i].push({ filled: 0, color: "#000000" });
       }
     }
   }
 
-  getBoardState() {
-    return this.boardState;
+  getElems() {
+    return this.elems;
   }
 
   addToBoard(tetromino) {
@@ -27,8 +27,8 @@ class Board {
       for (let j = 0; j < 4; j++) {
         if (state[index] & (0x8000 >> (i * 4 + j))) {
           if (y + i >= 1 && x + j >= 0 && x + j < 20) {
-            this.boardState[y + i][x + j].filled = 1;
-            this.boardState[y + i][x + j].color = shape;
+            this.elems[y + i][x + j].filled = 1;
+            this.elems[y + i][x + j].color = shape;
           } else if (y + i == 0) {
             newGame(); //end game here////////////
           }
@@ -42,12 +42,13 @@ class Board {
     let ty = tetromino.getPosition()[1] + direction[1];
     let state = tetromino.getState();
     let index = (tetromino.getRotation() + rotation) % 4;
+
     for (let y = 0; y < 4; ++y) {
       for (let x = 0; x < 4; ++x) {
         if (state[index] & (0x8000 >> (y * 4 + x))) {
           if (ty + y > 19 || tx + x > 9 || tx + x < 0 || ty + y < 0) {
             return true;
-          } else if (this.boardState[ty + y][tx + x].filled === 1) {
+          } else if (this.elems[ty + y][tx + x].filled === 1) {
             return true;
           }
         }
@@ -55,12 +56,8 @@ class Board {
     }
     return false;
   }
+
   hardDrop(tetromino) {
-    let y = 0;
-    while (!this.checkCollision(tetromino, [0, y + 1], 0)) y++;
-    tetromino.drop(y);
-  }
-  getShadow(tetromino) {
     let y = 0;
     while (!this.checkCollision(tetromino, [0, y + 1], 0)) y++;
     return y;
@@ -72,7 +69,7 @@ class Board {
     let startRow = -1;
     for (let i = 0; i < ROWS; i++) {
       let j;
-      for (j = 0; j < COLS && this.boardState[i][j].filled === 1; j++) {}
+      for (j = 0; j < COLS && this.elems[i][j].filled === 1; j++) {}
       if (j === COLS) {
         console.log("line");
         numLines += 1;
@@ -90,9 +87,9 @@ class Board {
       for (let j = 0; j < lines[i][1]; ++j) {
         for (let k = 0; k < COLS; ++k)
           newLine.push({ filled: 0, color: "#000000" });
-        this.boardState.unshift(newLine); //add row of zeros
+        this.elems.unshift(newLine); //add row of zeros
       }
-      for (let j = lines[i][0]; j < lines[i][1]; ++j) this.board.splice(j, 1);
+      for (let j = lines[i][0]; j < lines[i][1]; ++j) this.elems.splice(j, 1);
     }
   }
 }

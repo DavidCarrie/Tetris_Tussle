@@ -20,12 +20,24 @@ function draw() {}
 function display(gameState) {
   let unit = windowHeight / 25;
   let topLeft = [windowWidth / 2 - 5 * unit, windowHeight / 2 - 10 * unit];
-  let board = gameState.boardState;
+  let board = gameState.board;
   let shadow = gameState.shadow;
   let position = gameState.position;
-  let rotation = gameState.rotation;
   let shape = gameState.shape;
   let clr = gameState.clr;
+
+  //for later -- two boards on same screen
+  // let topLeft1 = [
+  //   (3 * windowWidth) / 4 - 5 * unit,
+  //   windowHeight / 2 - 10 * unit,
+  // ];
+  // let topLeft2 = [windowWidth / 4 - 5 * unit, windowHeight / 2 - 10 * unit];
+
+  // let board1 = gameState.board1;
+  // let shadow1 = gameState.shadow1;
+  // let position1 = gameState.position1;
+  // let shape1 = gameState.shape1;
+  // let clr1 = gameState.clr1;
   clear();
   drawBoard(unit);
 
@@ -46,7 +58,7 @@ function display(gameState) {
   //draw the current tetromino and its shadow
   for (let y = 0; y < 4; y++) {
     for (let x = 0; x < 4; x++) {
-      if (shape[rotation] & (0x8000 >> (y * 4 + x))) {
+      if (shape & (0x8000 >> (y * 4 + x))) {
         if (
           position[1] + y >= 0 &&
           position[0] + x >= 0 &&
@@ -132,27 +144,3 @@ function drawBoard(unit) {
   rect(windowWidth / 2, windowHeight / 2, unit * 10, unit * 20);
   drawGrid(unit);
 }
-
-// //
-// function keyPress(key) {
-//   switch (key) {
-//     case "a":
-//       currentX + windowHeight / 25;
-//       break;
-//     case "d":
-//       currentX += windowHeight / 25;
-
-//       break;
-//     case "s":
-//       currentY += windowHeight / 25;
-
-//       break;
-//     /*  case "r":
-//       break;
-//     case " ":
-//       currentY += windowHeight;
-
-//       break;
-//   }*/
-//   }
-// }
