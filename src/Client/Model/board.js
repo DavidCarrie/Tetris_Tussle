@@ -35,7 +35,7 @@ class Board {
         }
       }
     }
-    // this.clearLine();
+    //this.clearLine();
   }
   checkCollision(tetromino, direction, rotation) {
     let tx = tetromino.getPosition()[0] + direction[0];
@@ -62,34 +62,27 @@ class Board {
     while (!this.checkCollision(tetromino, [0, y + 1], 0)) y++;
     return y;
   }
-
+  
   clearLine() {
-    let numLines = 0;
-    let lines = [];
-    let startRow = -1;
-    for (let i = 0; i < ROWS; i++) {
-      let j;
-      for (j = 0; j < COLS && this.elems[i][j].filled === 1; j++) {}
-      if (j === COLS) {
-        console.log("line");
-        numLines += 1;
-        if (startRow === -1) startRow = i;
-      } else if (numLines > 0) {
-        lines.push([startRow, numLines]);
-        startRow = -1;
-      }
+
+
+
+      for (let i = ROWS - 1; i >= 0; i++) {
+        if (!this.elems[i].includes(0,"#000000" )) {
+          this.elems.splice(i, 1)
+          this.grid.unshift(new Array(COLS).fill({ filled: 0, color: "#000000" }));
+        }
+
+
     }
-    if (numLines > 0) lines.push([startRow, numLines]);
-    console.log(lines);
-    //loop through lines and add to score accordingly
-    for (let i = 0; i < lines.length; ++i) {
-      let newLine = [];
-      for (let j = 0; j < lines[i][1]; ++j) {
-        for (let k = 0; k < COLS; ++k)
-          newLine.push({ filled: 0, color: "#000000" });
-        this.elems.unshift(newLine); //add row of zeros
-      }
-      for (let j = lines[i][0]; j < lines[i][1]; ++j) this.elems.splice(j, 1);
-    }
+  
   }
+    
+
+  deleteRow(array, row) {
+    array = array.slice(0); // make copy
+    array.splice(row - 1, 1);
+    return array;
+ }
+
 }

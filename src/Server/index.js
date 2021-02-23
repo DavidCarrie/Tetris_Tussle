@@ -29,28 +29,15 @@ io.sockets.on(
   // We are given a websocket object in our function
   function (socket) {
     console.log("We have a new client: " + socket.id);
-    /*  id,
-    gameMode,
-    isPlaying,
-    board,
-    shape,
-    shadow,
-    nextShape,
-    position,
-    color*/
     socket.on("start", function (data) {
       console.log(socket.id);
-      isPlaying = false; //change this
       let player = new Player(
         socket.id,
-        data.gameMode,
-        isPlaying,
         data.board,
         data.shape,
         data.shadow,
-        data.nextShape,
         data.position,
-        data.color
+        data.clr
       );
       players[socket.id] = player;
     });
@@ -61,9 +48,8 @@ io.sockets.on(
       player.board = data.board;
       player.shape = data.shape;
       player.shadow = data.shadow;
-      player.nextShape = data.nextShape;
       player.position = data.position;
-      player.color = data.color;
+      player.clr = data.clr;
     });
 
     socket.on("disconnect", function () {
