@@ -19,8 +19,8 @@ let players = {};
 
 let rooms = []; //unused for now -- need later
 
-//update the game every 16 ms
-setInterval(updateGame, 16);
+//update the game every 30 ms
+setInterval(updateGame, 30);
 
 // Register a callback function to run when we have an individual connection
 // This is run for each individual user that connects
