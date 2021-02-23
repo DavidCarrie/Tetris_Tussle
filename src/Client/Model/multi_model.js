@@ -17,6 +17,23 @@ function tick() {
     currentTetromino = new Tetromino();
     currentTetromino.setShadow(board.hardDrop(currentTetromino));
   }
+  // //send update to the server
+  // let data = {
+  //   board: board.elems,
+  //   shape: currentTetromino.getState()[currentTetromino.getRotation],
+  //   shadow: currentTetromino.getShadow(),
+  //   position: currentTetromino.getPosition(),
+  //   clr: currentTetromino.getShape(),
+  // };
+  // socket.emit("update", data);
+  display(getState(), otherPlayer);
+}
+
+//queue for the next pieces
+function newTetromino() {
+  currentTetromino = new tetromino();
+}
+function getState() {
   //send update to the server
   let data = {
     board: board.elems,
@@ -26,21 +43,6 @@ function tick() {
     clr: currentTetromino.getShape(),
   };
   socket.emit("update", data);
-  
-  // //get update
-  Object.keys(players).forEach(function(key) {
-    console.log(key, players[key]);
-    if(key !== socket) 
-      otherPlayer = players[key];
-  });
-  display(getState(), otherPlayer);
-}
-
-//queue for the next pieces
-function newTetromino() {
-  currentTetromino = new tetromino();
-}
-function getState() {
   return {
     board: board.elems,
     shadow: currentTetromino.getShadow(),
@@ -74,12 +76,6 @@ function keyPress(key) {
   }
   if (key !== "down")
     currentTetromino.setShadow(board.hardDrop(currentTetromino));
-  Object.keys(players).forEach(function(key) {
-    console.log(key, players[key]);
-    if(key !== socket) 
-      otherPlayer = players[key];
-  });
-  
   display(getState(), otherPlayer);
 }
 
@@ -125,9 +121,13 @@ function newGame() {
     clr: currentTetromino.getShape(),
   };
   socket.emit("start", data);
-  
+
   socket.on("heartbeat", function (data) {
     //console.log(data);
     players = data;
+    Object.keys(players).forEach(function (key) {
+      // console.log(key, players[key]);
+      if (key !== socket.id) otherPlayer = players[key];
+    });
   });
 }

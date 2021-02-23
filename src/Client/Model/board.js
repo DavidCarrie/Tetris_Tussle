@@ -30,7 +30,7 @@ class Board {
             this.elems[y + i][x + j].filled = 1;
             this.elems[y + i][x + j].color = shape;
           } else if (y + i == 0) {
-            newGame(); //end game here////////////
+            // newGame(); //end game here////////////
           }
         }
       }
@@ -62,27 +62,21 @@ class Board {
     while (!this.checkCollision(tetromino, [0, y + 1], 0)) y++;
     return y;
   }
-  
+
   clearLine() {
-
-
-
-      for (let i = ROWS - 1; i >= 0; i++) {
-        if (!this.elems[i].includes(0,"#000000" )) {
-          this.elems.splice(i, 1)
-          this.grid.unshift(new Array(COLS).fill({ filled: 0, color: "#000000" }));
-        }
-
-
+    for (let i = ROWS - 1; i >= 0; i++) {
+      if (!this.elems[i].includes(0, "#000000")) {
+        this.elems.splice(i, 1);
+        this.grid.unshift(
+          new Array(COLS).fill({ filled: 0, color: "#000000" })
+        );
+      }
     }
-  
   }
-    
 
   deleteRow(array, row) {
     array = array.slice(0); // make copy
     array.splice(row - 1, 1);
     return array;
- }
-
+  }
 }

@@ -32,7 +32,7 @@ function display(gameState, otherPlayer) {
     (3 * windowWidth) / 4 - 5 * unit,
     windowHeight / 2 - 10 * unit,
   ];
-  
+
   //player1
   let board1 = gameState.board;
   let shadow1 = gameState.shadow;
@@ -43,7 +43,8 @@ function display(gameState, otherPlayer) {
   drawPlaced(unit, topLeft1, board1);
   drawCurrent(unit, position1, topLeft1, shadow1, clr1, shape1);
   //console.log(otherPlayer);
-  if (otherPlayer != null && otherPlayer.board != null){ //player2 
+  if (otherPlayer != null && otherPlayer.board != null) {
+    //player2
     let board2 = otherPlayer.board;
     let shadow2 = otherPlayer.shadow;
     let position2 = otherPlayer.position;
@@ -63,7 +64,6 @@ function windowResized() {
 
 // draw a single square at (x, y)
 function drawBlock(x, y, outline, strokeClr, clr, unit) {
-  console.log(clr);
   if (clr === "none") noFill();
   else fill(clr);
   strokeWeight(outline);
@@ -115,7 +115,7 @@ function drawBoard(unit, topLeft) {
   drawGrid(unit, topLeft);
 }
 
-function drawPlaced(unit, topLeft, board){
+function drawPlaced(unit, topLeft, board) {
   //draw the placed tetrominos
   for (let y = 0; y < 20; ++y) {
     for (let x = 0; x < 10; ++x) {
@@ -132,7 +132,7 @@ function drawPlaced(unit, topLeft, board){
   }
 }
 
-function drawCurrent(unit, position, topLeft, shadow, clr, shape){
+function drawCurrent(unit, position, topLeft, shadow, clr, shape) {
   //draw the current tetromino and its shadow
   for (let y = 0; y < 4; y++) {
     for (let x = 0; x < 4; x++) {
