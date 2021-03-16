@@ -24,4 +24,4 @@ cabal.config
 /Physics Engine Families/Papers
 Main
 *-nup.pdf
-node_modules
+node_modules/
