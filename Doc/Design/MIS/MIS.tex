@@ -1,0 +1,1090 @@
+\documentclass[12,english]{article}
+\usepackage[letterpaper, portrait, margin=1in]{geometry}
+
+\usepackage{amsmath}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage{textcomp}
+\usepackage{titlesec}
+\setcounter{secnumdepth}{4}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{multirow}
+
+
+\hypersetup{
+    bookmarks=true,         % show bookmarks bar?
+      colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=black,          % color of internal links (change box color with linkbordercolor)
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\title{SE 3XA3: Module Interface Specification\\Tetris Tussle}
+
+\author{Nicholas Lobo \\ lobon3 \\ 400179304 \and
+	Matthew Paulin \\ paulinm \\ 400187147 \and
+	David Carrie \\ carriedd \\ 000661652 \and
+}
+
+
+\date{}
+
+
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+\listoftables
+\newpage
+
+\section{Module Hierarchy}
+\begin{table}[H]
+\centering
+\begin{tabular}{p{0.3\textwidth} p{0.6\textwidth}}
+\toprule
+\textbf{Level 1} & \textbf{Level 2}\\
+\midrule
+
+{Hardware-Hiding Module}& N/A\\
+\midrule
+
+\multirow{7}{0.3\textwidth}{Behaviour-Hiding Module} 
+& User Inputs Module\\
+& Main View Module\\
+& Leaderboard Module\\
+& Menu Module\\
+& Singleplayer View Module\\
+& Multiplayer View Module\\
+& Singleplayer Module\\
+& Multiplayer Module\\
+& Player Module\\
+& Tetromino Module\\
+& Board Module\\
+
+\midrule
+
+Software Decision Module & Server Module\\ 
+
+\bottomrule
+
+\end{tabular}
+\caption{Module Hierarchy}
+\label{TblMH}
+\end{table}
+
+\section{MIS of Input Module}
+		\subsection{Interface Syntax}
+		\subsubsection{Exported Access Programs}
+		\begin{tabular}[pos]{|c|c|c|c|}
+			\hline
+		\label{InputEAP}
+			\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ \hline
+			onkeydown & KeyboardEvent Object & - & -\\ \hline
+			
+		\end{tabular}
+		
+		\subsection{Interface Semantics}
+		\subsubsection{State Variables}
+		keys: map (int $\rightarrow$ string) - A mapping of keyboard key codes to the corresponding game control input
+		
+		\subsubsection{Environmental Variables}
+		N/A
+		
+		\subsubsection{Assumptions}
+		N/A
+		
+		\subsubsection{Access Program Semantics}
+		onkeydown(event):\\
+		
+		Input: Object event, a JavaScript Keyboard Event Object representing a user's keyboard input\\
+		
+		Transition: Translate the key code into a control input and pass the value to the Player module through a call of the keyPress function \\
+		
+		Output: None\\
+		
+		Exceptions: None\\
+\section{MIS of Main View Module}
+		\subsection{Interface Syntax}
+		\subsubsection{Exported Access Programs}
+		\begin{tabular}[pos]{|c|c|c|c|}
+			
+			\hline
+			\label{MainviewEAP}
+			\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ \hline
+			mouseClicked & MouseEvent Object & GUI & -\\ \hline
+
+			
+		\end{tabular}
+		
+		\subsection{Interface Semantics}
+		\subsubsection{State Variables}
+		viewState: string - an indication of the current view to be displayed
+		\subsubsection{Environmental Variables}
+		N/A
+		\subsubsection{Assumptions}
+		N/A
+		
+		\subsubsection{Access Program Semantics}
+		
+		mouseClicked(event):
+		
+		Input: Object event, a JavaScript Mouse Event Object representing a user's mouse input\\
+		
+		Transition: Translate the mouse input into a control input and adjusts the viewState variable\\
+		
+		Output: The visual elements to be displayed\\
+		
+		Exceptions: None\\
+\section{MIS of Leaderboard Module}
+	\subsection{Interface Syntax}
+		\subsubsection{Exported Access Programs}
+		\begin{table}[!htbp]
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\label{SingleviewEAP}
+			Name & In & Out & Exceptions \\ \hline
+			updateLeaderboard & string, int & GUI & - \\ \hline
+		\end{tabular}
+	\end{table}
+		
+	\subsection{Interface Semantics}
+		\subsubsection{State Variables}
+		highScores: List : int
+		
+		\subsubsection{Environmental Variables}
+        N/A
+		\subsubsection{Assumptions}
+        N/A
+		\subsubsection{Access Program Semantics}
+
+        updateLeaderboard(name,score):
+
+		Input: name: string - the name of the player, score: int - the point total for a completed game
+		
+		Transition: updates the menu view module and the highScores state variable
+		
+		Output: A list of high scores shown on screen
+		
+		Exception - None\\
+\section{MIS of Menu Module}
+	\subsection{Interface Syntax}
+		\subsubsection{Exported Access Programs}
+		
+	\begin{tabular}[pos]{|c|c|c|c|}
+	\hline
+	\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ 
+	\hline
+	changeView & string & GUI & -\\ 
+	\hline
+	\end{tabular}		
+		
+	\subsection{Interface Semantics}
+		\subsubsection{State Variables}
+		currentView: string- represents the current view being displayed
+		
+		\subsubsection{Environmental Variables}
+		N/A
+		\subsubsection{Assumptions}
+        N/A
+		\subsubsection{Access Program Semantics}
+		changeView(currView):
+
+		Input: string value to change the current view being displayed
+		
+		Transition: sets currentView to the value of currView
+		
+		Exception: none\\
+		\\
+
+
+\newpage
+\section{MIS of Singleplayer View Module}
+	\subsection{Interface Syntax}
+		\subsubsection{Exported Access Programs}
+		\begin{table}[!htbp]
+				\begin{tabular}{|c|c|c|c|}
+					\hline
+					\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ \hline
+					setup &  - & GUI & - \\ \hline
+				    draw &  - & - & - \\ \hline
+				    display &  Player & GUI & - \\ \hline
+				    windowResized & - & GUI & - \\ \hline
+				    drawBlock & integer,integer,integer,integer,string,integer, & GUI & - \\ \hline
+				    drawBorder & integer, List(integer) & GUI & - \\ \hline
+				    drawGrid & integer, List(integer) & GUI & - \\ \hline
+				    drawBoard & integer, List(integer) & GUI & - \\ \hline
+				    drawPlaced & integer, List(integer), Board & GUI & - \\ \hline
+				    drawCurrent & integer, List(integer), List(integer), integer, string, Tetromino, integer & GUI & - \\ \hline
+				    
+				\end{tabular}
+			\end{table}
+	\subsection{Interface Semantics}
+		\subsubsection{State Variables}
+		
+		COLORS: List: String - list of different colour hex codes that represents the colours of the Tetromino\\
+		
+		
+		\subsubsection{Environmental Variables}
+		
+		N/A 
+		
+		\subsubsection{Assumptions}
+		
+		N/A
+
+		\subsubsection{Access Program Semantics}
+		%
+% 		getRecordingStatus():
+		
+% 		Input: none
+		
+% 		Transition: accesses variable isRecording and retrieves the value
+		
+% 		Output: returns value of variable isRecording
+		
+% 		Exception: none\\
+% 		\\
+		%
+		
+	  setup():
+		
+	  Input: 
+		
+	  Transition: displays p5.js canvas on screen
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 
+	  \\
+	  draw():
+		
+	  Input: 
+		
+	  Transition: needed for the processing library to function correctly
+	  
+	  Output: 
+	  
+	  Exception - none\\ 
+	  \\
+	  display(player):
+		
+	  Input: player - player object
+		
+	  Transition: uses other methods to display game state on screen
+	  
+	  Output: 
+	  
+	  Exception - none\\
+	  \\
+	  windowResized():
+		
+	  Input: player -
+		
+	  Transition: Updates size of canvas to match size of browser window
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 	  	  
+	  \\
+	  drawBlock(x,y,outline,strokecolor,color,unit):
+		
+	  Input: x - x position of a block, y - y position of block, outline - stroke weight of the block outline,
+	  color - color of the block, unit- size of the block
+		
+	  Transition: fills in a grid square
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 	  	  
+	  \\
+	  drawBorder(units, topleft):
+		
+	  Input: units - size of a grid square, topleft- x,y position of the board
+		
+	  Transition: displays border for the board
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 	  	  
+	  \\
+	drawGrid(units, topleft):
+	
+	  Input: units - size of a grid square, topleft- x,y position of the board
+		
+	  Transition: displays the grid lines for the board
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 
+	  \\
+	drawBoard(units, topleft):
+	
+	  Input: units - size of a grid square, topleft- x,y position of the board
+		
+	  Transition: calls the drawGrid and drawBoard function
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 	  
+	  \\
+	drawPlaced(units, topleft, board):
+	
+	  Input: units - size of a grid square, topleft- x,y position of the board, board - board object
+		
+	  Transition: draws the Tetrominos placed on the board
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 	  	  
+\\
+	drawCurrent(unit, position, topleft, shadow. color, shape ):
+	
+	  Input: units - size of a grid square, position - position of the Tetromino, topleft- x,y position of the board, 
+	  shadow - The vertical position of the shadow piece, color - the color of the Tetromino, shape - an integer giving the binary representation of the Tetromino
+		
+	  Transition: draws the Tetrominos placed on the board
+	  
+	  Output: GUI
+	  
+	  Exception - none 
+	  
+	  
+	  \newpage
+\section{MIS of Multiplayer View Module}
+	\subsection{Interface Syntax}
+		\subsubsection{Exported Access Programs}
+		\begin{table}[!htbp]
+				\begin{tabular}{|c|c|c|c|}
+					\hline
+					\label{MultiviewEAP}
+					\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ \hline
+					setup &  - & GUI & - \\ \hline
+				    draw &  - & - & - \\ \hline
+				    display &  Player, Player & GUI & - \\ \hline
+				    windowResized & - & GUI & - \\ \hline
+				    drawBlock & integer,integer,integer,integer,string,integer, & GUI & - \\ \hline
+				    drawBorder & integer, List(integer) & GUI & - \\ \hline
+				    drawGrid & integer, List(integer) & GUI & - \\ \hline
+				    drawBoard & integer, List(integer) & GUI & - \\ \hline
+				    drawPlaced & integer, List(integer), Board & GUI & - \\ \hline
+				    drawCurrent & integer, List(integer), List(integer),integer, string, Tetromino, integer & GUI & - \\ \hline
+				    
+				\end{tabular}
+			\end{table}
+	\subsection{Interface Semantics}
+		\subsubsection{State Variables}
+		
+		COLORS: List: String - list of different colour hex codes that represents the colours of the Tetromino\\
+		
+		
+		\subsubsection{Environmental Variables}
+		
+		N/A 
+		
+		\subsubsection{Assumptions}
+		
+		N/A
+
+		\subsubsection{Access Program Semantics}
+		
+	  setup():
+		
+	  Input: 
+		
+	  Transition: displays p5.js canvas on screen
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 
+\\
+	  draw():
+		
+	  Input: 
+		
+	  Transition: needed for the processing library to function correctly
+	  
+	  Output: 
+	  
+	  Exception - none\\ 
+	  \\
+	  display(player,player2):
+		
+	  Input: player - player object
+		
+	  Transition: uses other methods to display game state on screen for two players
+	  
+	  Output: 
+	  
+	  Exception - none\\ 
+	  \\
+	  windowResized():
+		
+	  Input: player -
+		
+	  Transition: Updates size of canvas to match size of browser window
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 	  	  
+	  \\
+	  drawBlock(x,y,outline,strokecolor,color,unit):
+		
+	  Input: x - x position of a block, y - y position of block, outline - stroke weight of the block outline,
+	  color - color of the block, unit- size of the block
+		
+	  Transition: fills in a grid square
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 	  	  
+	  \\
+	  drawBorder(units, topleft):
+		
+	  Input: units - size of a grid square, topleft- x,y position of the board
+		
+	  Transition: displays border for the board
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 	  	  
+	  \\
+	drawGrid(units, topleft):
+	
+	  Input: units - size of a grid square, topleft- x,y position of the board
+		
+	  Transition: displays the grid lines for the board
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 
+	  \\
+	drawBoard(units, topleft):
+	
+	  Input: units - size of a grid square, topleft- x,y position of the board
+		
+	  Transition: calls the drawGrid and drawBoard function
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 	  
+	  \\
+	drawPlaced(units, topleft, board):
+	
+	  Input: units - size of a grid square, topleft- x,y position of the board, board - board object
+		
+	  Transition: draws the Tetrominos placed on the board
+	  
+	  Output: GUI
+	  
+	  Exception - none\\ 	  	  
+\\
+	drawCurrent(unit, position, topleft, shadow. color, shape ):
+	
+	  Input: units - size of a grid square, position - position of the Tetromino, topleft- x,y position of the board, 
+	  shadow - The vertical position of the shadow piece, color - the color of the Tetromino, shape - an integer giving the binary representation of the Tetromino
+		
+	  Transition: draws the Tetrominos placed on the board
+	  
+	  Output: GUI
+	  
+	  Exception - none
+\section{MIS of Tetromino Module}
+		\subsection{Interface Syntax}
+			\subsubsection{Exported Access Programs}
+				\begin{tabular}[pos]{|c|c|c|c|}
+					
+					\hline
+					\label{TetrominoEAP}
+					\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ \hline
+					Tetromino &  - & Tetromino Object & -\\ \hline
+                    getPosition &  - & List(integer) & -\\ \hline
+                    getShape &  - & integer & -\\ \hline
+                    getState &  - &  List(integer)& -\\ \hline
+                    getRotation &  - & integer & -\\ \hline
+                    rotate &  - & -  & -\\ \hline
+					getShadow &  - & integer & -\\ \hline
+				    setShadow &  integer & -  & -\\ \hline
+			        gameTick &  - & - & - \\ \hline
+			        move & string & - & - \\ \hline
+				    drop & integer & - & - \\ \hline
+ 				\end{tabular}
+				
+		\subsection{Interface Semantics}
+			\subsubsection{State Variables}
+			shape: integer - represents corresponding index in SHAPES\\  
+			state: List(integer) - lists of binary encoded all rotations of each shape\\
+			rotation: integer - specifies the rotation of shape and corresponds to index in shape array\\
+			shadow: integer - represents the vertical position of the shadow\\
+			position: List(integer) - x and y position of the Tetromino\\
+			
+			
+			
+			\subsubsection{Environmental Variables}
+			SHAPES: List(List(integer)) - stores the binary representations of each Tetromino for each rotation position
+			
+			\subsubsection{Assumptions}
+			Variables should be set before trying to access them
+			
+			\subsubsection{Access Program Semantics}
+			
+			Tetromino():
+			
+			Input: 
+			
+			Transition: creates a random Tetromino object in its default position
+			
+			Output: Tetromino Object
+			
+			Exception: none\\
+			\\
+			getPosition():
+			
+			Input: none
+			
+			Transition: none
+			
+			Output: a list of integers containing the x and y position of the Tetromino
+			
+			Exception: none\\
+	        \\			
+			getShape():
+			
+			Input: none
+			
+			Transition: none
+			
+			Output: An integer representing the Tetromino type's corresponding location in the SHAPES list
+			
+			Exception: none\\
+			\\							
+			getState():
+			
+			Input: none
+			
+			Transition: none
+			
+			Output: A list of integers containing the binary encoded versions of the Tetromino in all its possible rotations
+			
+			Exception: none\\
+			\\		
+			getRotation():
+			
+			Input: none
+			
+			Transition: none
+			
+			Output: An integer representing the current rotation of the Tetromino
+			
+			Exception: none\\
+			\\
+			rotate():
+			
+			Input: none
+			
+			Transition: rotates the Tetromino 90 degrees
+			
+			Output: none
+			
+			Exception: none\\
+			\\		
+			getShadow():
+			
+			Input: none
+			
+			Transition: none
+			
+			Output: An integer representing the vertical position of the Tetromino's shadow
+			
+			Exception: none\\
+			\\	
+			setShadow(shadow):
+			
+			Input: shadow - An integer representing the vertical position of the Tetromino's shadow
+			
+			Transition: update the Tetromino's shadow
+			
+			Output: none
+			
+			Exception: none\\
+			\\	
+			gameTick():
+			
+			Input: none
+			
+			Transition: move the Tetromino downwards 
+			
+			Output: none
+			
+			Exception: none\\
+			\\	
+			move(direction):
+			
+			Input: direction - A string representing the direction of movement
+			
+			Transition: update the Tetromino's position
+			
+			Output: none
+			
+			Exception: none\\
+			\\	
+			drop(y):
+			
+			Input: y - an integer representing the vertical amount to move
+			
+			Transition: update the Tetromino's position
+			
+			Output: none
+			
+			Exception: none\\
+			\\	
+\section{MIS of Board Module}
+		\subsection{Interface Syntax}
+			\subsubsection{Exported Access Programs}
+				\begin{tabular}[pos]{|c|c|c|c|}
+					
+					\hline
+					\label{BoardEAP}
+					\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ \hline
+					Board &  - & Board Object & -\\ \hline
+					getElems &  - & List(List(Cell)) & -\\ \hline
+					addToBoard &  Tetromino & - & -\\ \hline
+                    checkCollisions &  Tetromino, List(integer), integer & boolean & -\\ \hline
+                    hardDrop &  Tetromino & integer & -\\ \hline
+                    clearLine &  -  & - & -\\ \hline
+ 				\end{tabular}
+				
+		\subsection{Interface Semantics}
+			\subsubsection{State Variables}
+			elems: List(List(cells)) - represents one grid unit of the board, if its filled and the current color of the grid unit. 
+			
+			
+			
+			\subsubsection{Environmental Variables}
+			ROWS: integer - number of rows on the board
+			COLS: integer - number of columns on the board
+			
+			\subsubsection{Assumptions}
+			None
+			
+			\subsubsection{Access Program Semantics}
+			
+			Board():
+			
+			Input: 
+			
+			Transition: creates an empty board object
+		
+			Output: Board Object
+			
+			Exception: none\\
+			\\
+			getElems():
+			
+			Input: none
+			
+			Transition: none
+			
+			Output: Elems
+			
+			Exception: none\\
+	        \\			
+			addToBoard(Tetromino):
+			
+			Input: Tetromino object
+			
+			Transition: fills in cells containing the tetromino on the board
+			
+			Output: none 
+			
+			Exception: none\\
+			\\							
+			checkCollision(Tetromino, direction, rotation):
+			
+			Input: Tetromino Object, direction - List(integer) representing horizontal and vertical direction of the Tetromino, rotation - integer representing the way the Tetromino will rotate 
+			
+			Transition: Checks collisions between Tetromino and the board
+			
+			Output: Boolean representing if a collision occurred
+			
+			Exception: none\\
+			\\		
+			
+			hardDrop(Tetromino):
+			
+			Input: Tetromino - a Tetromino object 
+			
+			Transition: Lowest position the Tetromino can move to without colliding with the board
+			
+			Output: An integer representing the vertical position of the lowest point on the board
+			
+			Exception: none\\
+			\\
+			clearLine():
+			
+			Input: none
+			
+			Transition: Delete filled in rows on the board and shifts all filled pieces on the board down one unit.
+			
+			Output: none
+			
+			Exception: none\\
+			\\		
+\section{MIS of Player Module}
+		\subsection{Interface Syntax}
+			\subsubsection{Exported Access Programs}
+				\begin{tabular}[pos]{|c|c|c|c|}
+					
+					\hline
+					%	\label
+					\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ \hline
+					Player & integer, Board, Tetromino, boolean   & Player Object & -\\ \hline
+					getId &  - & integer & -\\ \hline
+					getBoard &  - & Board & -\\ \hline
+					getTetromino &  - & Tetromino & -\\ \hline
+					isPaused &  - & boolean & -\\ \hline
+					setBoard &  Board & - & -\\ \hline
+                    setTetromino &  Tetromino & - & -\\ \hline
+                    togglePaused &  - & - & -\\ \hline
+                    
+ 				\end{tabular}
+				\label{PlayerEAP}
+		\subsection{Interface Semantics}
+			\subsubsection{State Variables}
+			id: integer - represents a unique player identifier\\ 
+			board: Board - current board with respect to player id\\
+			tetromino: Tetromino - current Tetromino with respect to player id \\
+			paused: boolean - checks whether the game is paused
+			
+			
+			\subsubsection{Environmental Variables}
+
+			
+			\subsubsection{Assumptions}
+			None
+			
+			\subsubsection{Access Program Semantics}
+			
+			Player(id, board, tetromino, paused):
+			Input: id - integer that represents a unique player identifier, board - Board - current board with respect to player id,
+			tetromino - current Tetromino with respect to player id, paused - boolean that checks whether the game is paused
+			
+			Transition: creates a Player  object
+		
+			Output: Player Object
+			
+			Exception: none\\
+			\\
+			getId():
+			
+			Input: none
+			
+			Transition: gets the unique id of the player object 
+			
+			Output: id 
+			
+			Exception: none\\
+	        \\			
+			getBoard():
+			
+			Input: none
+			
+			Transition:  gets the unique Board object of the player object 
+			
+			Output: Board object
+			
+			Exception: none\\
+			\\			
+			getTetromino():
+			
+			Input: none
+			
+			Transition:  gets the unique Tetromino object of the player object 
+			
+			Output: Tetromino object
+			
+			Exception: none\\
+			\\					
+			isPaused():
+			
+			Input: none
+			
+			Transition:  gets the value of the isPaused state variable for the player object
+			
+			Output: boolean
+			
+			Exception: none\\
+			\\
+			setTetromino():
+			
+			Input: Tetromino
+			
+			Transition:  gets the unique Tetromino object of the player object 
+			
+			Output: Tetromino object
+			
+			Exception: none\\
+			\\
+			setBoard():
+			
+			Input: Board
+			
+			Transition:  sets the attributes of the board for the player object 
+			
+			Output: none
+			
+			Exception: none\\
+			\\
+			togglePause():
+			
+			Input: none
+			
+			Transition:  changes the value of the isPaused state variable
+			
+			Output: none
+			
+			Exception: none\\
+			\\			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+\section{MIS of Singleplayer Module}
+		\subsection{Interface Syntax}
+			\subsubsection{Exported Access Programs}
+				\begin{tabular}[pos]{|c|c|c|c|}
+					
+					\hline
+					%	\label
+					\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ \hline
+					tick &  - & GUI & -\\ \hline
+					getState &  - & Player Object & -\\ \hline
+					display &  Player Object & GUI & -\\ \hline
+					newGame &  - & GUI & -\\ \hline
+					keyPress & string & GUI & -\\ \hline
+ 				\end{tabular}
+				\label{SingleplayerEAP}
+		\subsection{Interface Semantics}
+			\subsubsection{State Variables}
+			player: a Player object
+			\subsubsection{Environmental Variables}
+			\subsubsection{Assumptions}
+			None
+			\subsubsection{Access Program Semantics}
+			
+			tick():
+			Input: none
+			
+			Transition: Advances the game at a set interval and updates the Player accordingly
+		
+			Output: updates GUI
+			
+			Exception: none\\
+			\\	
+			getState():
+			Input: none
+			
+			Transition: Gets the current state of the game and displays that state
+		
+			Output: a player
+			
+			Exception: none\\
+			\\	
+			display(player):
+			Input: player - a Player object
+			
+			Transition: Sends an update to the client to update graphical elements
+		
+			Output: updates GUI
+			
+			Exception: none\\
+			\\	
+			newGame():
+			Input: none
+			
+			Transition: Creates a new game and updates the player accordingly
+		
+			Output: updates GUI to reflect the new game
+			
+			Exception: none\\
+			\\	
+			keyPress(key):
+			Input: key - a string representation of the key being pressed
+			
+			Transition: Handles the movement and updates the player accordingly
+		
+			Output: updates GUI to reflect the requested movement
+			
+			Exception: none\\
+			\\
+\section{MIS of Multiplayer Module}
+		\subsection{Interface Syntax}
+			\subsubsection{Exported Access Programs}
+				\begin{tabular}[pos]{|c|c|c|c|}
+					
+					\hline
+					%	\label
+					\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ \hline
+					tick &  - & GUI & -\\ \hline
+					getState &  - &  List(Player Object) & -\\ \hline
+					display &  List(Player Object) & GUI & -\\ \hline
+					newGame &  - & GUI & -\\ \hline
+					keyPress & string & GUI & -\\ \hline
+ 				\end{tabular}
+ 				\label{MultiplayerEAP}
+				
+		\subsection{Interface Semantics}
+			\subsubsection{State Variables}
+			players: a list of Player objects playing a multiplayer game against each other
+			\subsubsection{Environmental Variables}
+			\subsubsection{Assumptions}
+			None
+			\subsubsection{Access Program Semantics}
+			
+			tick():
+			Input: none
+			
+			Transition: Advances the game at a set interval and updates the players accordingly
+		
+			Output: updates GUI
+			
+			Exception: none\\
+			\\	
+			getState():
+			Input: none
+			
+			Transition: Gets the current state of the game and displays that state
+		
+			Output: players - the list of player objects playing the current game
+			
+			Exception: none\\
+			\\	
+			display(players):
+			Input: players - a list of Player objects
+			
+			Transition: Sends an update to the client to update graphical elements
+		
+			Output: updates GUI
+			
+			Exception: none\\
+			\\	
+			newGame():
+			Input: none
+			
+			Transition: Creates a new game and updates the players accordingly
+		
+			Output: updates GUI to reflect the new game
+			
+			Exception: none\\
+			\\	
+			keyPress():
+			Input: key - a string representation of the key being pressed
+			
+			Transition: Handles the movement and updates the players accordingly
+		
+			Output: updates GUI to reflect the movement
+			
+			Exception: none\\
+			\\
+			
+			
+\section{MIS of Server Module}
+	\subsection{Interface Syntax}
+		\subsubsection{Exported Access Programs}
+		
+	\begin{tabular}[pos]{|c|c|c|c|}
+	\hline
+	\textbf{Name}& \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\ 
+	\hline
+	setInterval & integer & -  & -\\ \hline
+	newConnection & Socket Object & -  & -\\ \hline
+	update & Player Object & -  & -\\ \hline
+	disconnect & Socket Object & -  & -\\ \hline
+	heartbeat & - & GUI  & -\\ \hline
+	\end{tabular}		
+	\label{ServerEAP}	
+	\subsection{Interface Semantics}
+		\subsubsection{State Variables}
+		port: int - an integer representing the server's port\\
+		server: express server - the server\\
+		players: List(Sockets) - a list of connected clients
+		
+		\subsubsection{Environmental Variables}
+		N/A
+		\subsubsection{Assumptions}
+        N/A
+		\subsubsection{Access Program Semantics}
+		setInterval(interval):
+
+		Input: interval - integer that represents the interval by which the game should be updated on
+		
+		Transition: calls the heartbeat function at this new interval
+		
+		Output: none
+		
+		Exception: none\\
+		\\
+		newConnection():
+
+		Input: Socket object  
+		
+		Transition: Adds the socket to the connected clients and creates a new game
+		
+		Output: none
+		
+		Exception: none\\
+		\\		
+		update(player):
+
+		Input: player - Player object to be updated
+		
+		Transition: update the player to reflect the latest game movements
+		
+		Output: none
+		
+		Exception: none\\
+		\\		
+		disconnect():
+
+		Input: Socket integer
+		
+		Transition: remove the socket from the list of active connections
+		
+		Output: none
+		
+		Exception: none\\
+		\\
+		heartbeat():
+
+		Input: none
+		
+		Transition: update all connected clients with the latest Player data to be displayed
+		
+		Output: none
+		
+		Exception: none\\
+		\\		
+\textbf{}
+\section{Major Revision History}
+March 14, 2021 - Rough draft\\
+March 16, 2021 - Revised draft \\
+March 18, 2021 - Revision 0 complete
+
+			
+\end{document}
