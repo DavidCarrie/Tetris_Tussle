@@ -7,14 +7,17 @@ const COLORS = [
   "#00ff00",
   "#ff0000",
 ];
-let backgrd, back_button, start_button, canvas;
+let backgrd, back_button, start_button;
+
+let unit, topLeft;
+
 function preload() {
   backgrd = loadImage("images/bg.jpg");
 }
 
 //setup the canvas
 function setup() {
-  canvas = createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight);
   back_button = createElement("a", "Back");
   back_button.position(50, 50);
   back_button.class("canvas-btn");
@@ -36,17 +39,31 @@ function start() {
 //update the screen
 function draw() {}
 function display(gameState) {
-  let unit = windowHeight / 25;
-  let topLeft = [windowWidth / 2 - 5 * unit, windowHeight / 2 - 10 * unit];
-  let board = gameState.board;
-  let shadow = gameState.shadow;
-  let position = gameState.position;
-  let shape = gameState.shape;
-  let clr = gameState.clr;
-  let score = gameState.score;
+  let board, queue, score, shadow, position, shape, clr, paused;
+  unit = windowHeight / 25;
+  topLeft = [windowWidth / 2 - 5 * unit, windowHeight / 2 - 10 * unit];
+  board = gameState.board;
+  queue = gameState.queue;
+  held = gameState.held;
+  score = gameState.score;
+  shadow = gameState.shadow;
+  position = gameState.position;
+  shape = gameState.shape;
+  clr = gameState.clr;
+  paused = gameState.paused;
+
   clear();
   image(backgrd, 0, 0, windowWidth, windowHeight); //draw the background
 
+  if (paused) {
+    //draw the text
+    fill(255);
+    noStroke();
+    textSize(unit * 5);
+    textAlign(CENTER);
+    text("Paused", windowWidth / 2, windowHeight / 2);
+    return;
+  }
   //draw the text
   fill(255);
   noStroke();
@@ -55,6 +72,7 @@ function display(gameState) {
   text(`Score: ${score}`, windowWidth / 2 + unit * 16, unit * 3);
   textSize(unit);
   text("Hold", windowWidth / 2 - unit * 10, windowHeight / 2 - unit * 3);
+  text("Next", windowWidth / 2 + unit * 9, windowHeight / 2 - unit * 8);
 
   //draw the hold area
   fill(0);
@@ -65,6 +83,47 @@ function display(gameState) {
     unit * 4,
     unit * 4
   );
+
+  //draw the held tetromino
+  if (held != undefined) {
+    for (let y = 0; y < 4; y++) {
+      for (let x = 0; x < 4; x++) {
+        if (held[0] & (0x8000 >> (y * 4 + x))) {
+          drawBlock(
+            windowWidth / 2 - unit * 11 + x * unit,
+            windowHeight / 2 - unit * 8 + y * unit,
+            2,
+            255,
+            COLORS[held[1]],
+            unit
+          );
+        }
+      }
+    }
+  }
+
+  //draw the queue area
+  fill(0);
+  rectMode(CENTER);
+  noStroke();
+  rect(windowWidth / 2 + unit * 9, windowHeight / 2, unit * 4, unit * 15);
+  //draw the queue
+  for (let i = 0; i < queue.length; ++i) {
+    for (let y = 0; y < 4; y++) {
+      for (let x = 0; x < 4; x++) {
+        if (queue[i][0] & (0x8000 >> (y * 4 + x))) {
+          drawBlock(
+            windowWidth / 2 + unit * 8 + x * unit,
+            windowHeight / 2 - unit * 7 + (y + i * 5) * unit,
+            2,
+            255,
+            COLORS[queue[i][1]],
+            unit
+          );
+        }
+      }
+    }
+  }
 
   drawBoard(unit, clr);
 
@@ -175,4 +234,10 @@ function drawBoard(unit, clr) {
   fill(0);
   rect(windowWidth / 2, windowHeight / 2, unit * 10, unit * 20);
   drawGrid(unit);
+}
+
+function keyPress(key) {
+  if (model) {
+    model.keyPress(key);
+  }
 }

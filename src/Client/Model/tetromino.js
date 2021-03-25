@@ -8,8 +8,6 @@ const SHAPES = [
   [0x4c80, 0xc600, 0x4c80, 0xc600], // 'Z'
 ];
 
-
-
 class Tetromino {
   constructor() {
     this.shape = Math.floor(Math.random() * 7);
@@ -28,8 +26,8 @@ class Tetromino {
   getRotation() {
     return this.rotation;
   }
-  rotate() {
-    this.rotation = (this.rotation + 1) % 4;
+  rotate(amount) {
+    this.rotation = (this.rotation + amount) % 4;
   }
   getShadow() {
     return this.shadow;

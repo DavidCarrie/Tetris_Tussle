@@ -64,6 +64,7 @@ class Board {
   }
 
   clearLine() {
+    //return score added
     let multiplier = 1;
     for (let y = ROWS - 1; y >= 0; --y) {
       let rowFilled = true;
@@ -75,8 +76,8 @@ class Board {
         }
       }
       if (rowFilled) {
-        score += 10 * multiplier;
-        multiplier + 1;
+        score += 40 * multiplier;
+        multiplier += 1;
         for (var yy = y; yy > 0; --yy) {
           for (var x = 0; x < COLS; ++x) {
             board.elems[yy][x] = board.elems[yy - 1][x];
