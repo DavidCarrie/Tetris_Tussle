@@ -1,6 +1,6 @@
 const ROWS = 20;
 const COLS = 10;
-let score = 0;
+//let score = 0;
 class Board {
   constructor() {
     // initialize an empty elems
@@ -35,7 +35,7 @@ class Board {
         }
       }
     }
-    this.clearLine();
+    return this.clearLine();
   }
   checkCollision(tetromino, direction, rotation) {
     let tx = tetromino.getPosition()[0] + direction[0];
@@ -65,10 +65,11 @@ class Board {
 
   clearLine() {
     //return score added
+    let score = 0;
     let multiplier = 1;
     for (let y = ROWS - 1; y >= 0; --y) {
       let rowFilled = true;
-      print(y);
+      //print(y);
       for (let x = 0; x < COLS; ++x) {
         if (this.elems[y][x].filled == 0) {
           rowFilled = false;
@@ -80,17 +81,18 @@ class Board {
         multiplier += 1;
         for (var yy = y; yy > 0; --yy) {
           for (var x = 0; x < COLS; ++x) {
-            board.elems[yy][x] = board.elems[yy - 1][x];
+            this.elems[yy][x] = this.elems[yy - 1][x];
           }
         }
         ++y;
       }
     }
-  }
-
-  getScore() {
     return score;
   }
+
+  // getScore() {
+  //   return score;
+  // }
 
   deleteRow(array, row) {
     array = array.slice(0); // make copy

@@ -26,7 +26,7 @@ class Model {
         this.held != undefined
           ? [this.held.getState()[0], this.held.getShape()]
           : undefined,
-      score: this.board.getScore(),
+      score: this.score,
       shadow: this.tetromino.getShadow(),
       position: this.tetromino.getPosition(),
       shape: this.tetromino.getState()[this.tetromino.getRotation()],
@@ -61,7 +61,7 @@ class Model {
       }
     } else if (key === "drop") {
       this.tetromino.drop(this.board.hardDrop(this.tetromino));
-      this.board.addToBoard(this.tetromino);
+      this.score += this.board.addToBoard(this.tetromino);
       this.tetromino = this.queue.shift();
       this.queue.push(new Tetromino());
     } else if (key === "hold") {
@@ -102,7 +102,7 @@ const tick = () => {
   if (!model.board.checkCollision(model.tetromino, [0, 1], 0)) {
     model.tetromino.gameTick();
   } else {
-    model.board.addToBoard(model.tetromino);
+    model.score += model.board.addToBoard(model.tetromino);
     model.tetromino = model.queue.shift();
     model.queue.push(new Tetromino());
     model.tetromino.setShadow(model.board.hardDrop(model.tetromino));
