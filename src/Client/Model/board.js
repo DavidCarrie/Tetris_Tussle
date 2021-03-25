@@ -35,7 +35,7 @@ class Board {
         }
       }
     }
-    return this.clearLine();
+    return this.clearLine(y);
   }
   checkCollision(tetromino, direction, rotation) {
     let tx = tetromino.getPosition()[0] + direction[0];
@@ -63,40 +63,31 @@ class Board {
     return y;
   }
 
-  clearLine() {
+  clearLine(y) {
     //return score added
     let score = 0;
     let multiplier = 1;
-    for (let y = ROWS - 1; y >= 0; --y) {
+    for (let row = ROWS - 1; row >= 0; --row) {
       let rowFilled = true;
-      //print(y);
-      for (let x = 0; x < COLS; ++x) {
-        if (this.elems[y][x].filled == 0) {
+      for (let col = 0; col < COLS; ++col) {
+        if (this.elems[row][col].filled == 0) {
           rowFilled = false;
+          multiplier = 1;
           break;
         }
       }
+
       if (rowFilled) {
         score += 40 * multiplier;
         multiplier += 1;
-        for (var yy = y; yy > 0; --yy) {
-          for (var x = 0; x < COLS; ++x) {
-            this.elems[yy][x] = this.elems[yy - 1][x];
-          }
+        this.elems.splice(row, 1);
+        this.elems.unshift([]);
+        for (let j = 0; j < COLS; ++j) {
+          this.elems[0].push({ filled: 0, color: "#000000" });
         }
-        ++y;
+        row += 1;
       }
     }
     return score;
-  }
-
-  // getScore() {
-  //   return score;
-  // }
-
-  deleteRow(array, row) {
-    array = array.slice(0); // make copy
-    array.splice(row - 1, 1);
-    return array;
   }
 }
