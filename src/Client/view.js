@@ -202,7 +202,7 @@ function drawBorder(unit, clr) {
 //draw the grid lines on the board
 function drawGrid(unit) {
   strokeWeight(1);
-  stroke(150);
+  stroke(50);
 
   //Horizontal grid lines
   for (let i = 1; i < 20; i++) {
@@ -233,10 +233,4 @@ function drawBoard(unit, clr) {
   fill(0);
   rect(windowWidth / 2, windowHeight / 2, unit * 10, unit * 20);
   drawGrid(unit);
-}
-
-function keyPress(key) {
-  if (model) {
-    model.keyPress(key);
-  }
 }

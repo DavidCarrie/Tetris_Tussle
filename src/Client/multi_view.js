@@ -7,19 +7,43 @@ const COLORS = [
   "#00ff00",
   "#ff0000",
 ];
+let backgrd, back_button, start_button;
+
+let unit, topLeft;
+
+function preload() {
+  backgrd = loadImage("images/bg.jpg");
+}
 
 //setup the canvas
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(0);
+  back_button = createElement("a", "Back");
+  back_button.position(50, 50);
+  back_button.class("canvas-btn");
+  back_button.addClass("back");
+  back_button.attribute("href", "./");
+
+  start_button = createElement("a", "Start");
+  start_button.center();
+  start_button.class("canvas-btn");
+  start_button.addClass("start");
+  start_button.attribute("onClick", "start()");
+  image(backgrd, 0, 0, windowWidth, windowHeight); //draw the background
   smooth();
 }
+function start() {
+  start_button.hide();
+  newGame();
+}
+
 //update the screen
 function draw() {}
 
 function display(gameState, otherPlayer) {
   clear();
   let unit = windowHeight / 25;
+  let smallUnit = unit / 2;
   //let topLeft = [windowWidth / 2 - 5 * unit, windowHeight / 2 - 10 * unit];
   // let board = gameState.board;
   // let shadow = gameState.shadow;
@@ -27,11 +51,8 @@ function display(gameState, otherPlayer) {
   // let shape = gameState.shape;
   // let clr = gameState.clr;
 
-  let topLeft1 = [windowWidth / 4 - 5 * unit, windowHeight / 2 - 10 * unit];
-  let topLeft2 = [
-    (3 * windowWidth) / 4 - 5 * unit,
-    windowHeight / 2 - 10 * unit,
-  ];
+  let topLeft1 = [windowWidth / 3 - 2 * unit, windowHeight / 2 - 10 * unit];
+  let topLeft2 = [topLeft1[0] + 18 * unit, windowHeight / 2 - 10 * smallUnit];
 
   //player1
   let board1 = gameState.board;
@@ -39,6 +60,64 @@ function display(gameState, otherPlayer) {
   let position1 = gameState.position;
   let shape1 = gameState.shape;
   let clr1 = gameState.clr;
+  clear();
+  image(backgrd, 0, 0, windowWidth, windowHeight);
+  //////////////////////////////////////////
+  //draw the text
+  fill(255);
+  noStroke();
+  textSize(unit);
+  textAlign(CENTER);
+  //text(`Score: ${score}`, windowWidth / 2, unit);
+  text("Hold", topLeft1[0] - 4 * unit, windowHeight / 2 - unit * 2.5);
+  text("Next", topLeft1[0] + unit * 14, windowHeight / 2 - unit * 8);
+
+  //draw the hold area
+  fill(0);
+  rectMode(CENTER);
+  rect(topLeft1[0] - 4 * unit, windowHeight / 2 - unit * 6, unit * 5, unit * 5);
+
+  //draw the held tetromino
+  // if (held != undefined) {
+  //   for (let y = 0; y < 4; y++) {
+  //     for (let x = 0; x < 4; x++) {
+  //       if (held[0] & (0x8000 >> (y * 4 + x))) {
+  //         drawBlock(
+  //           windowWidth / 2 - unit * 10 + x * unit,
+  //           windowHeight / 2 - unit * 8 + y * unit,
+  //           2,
+  //           255,
+  //           COLORS[held[1]],
+  //           unit
+  //         );
+  //       }
+  //     }
+  //   }
+  // }
+
+  //draw the queue area
+  fill(0);
+  rectMode(CENTER);
+  noStroke();
+  rect(topLeft1[0] + unit * 14, windowHeight / 2, unit * 5, unit * 15);
+  // //draw the queue
+  // for (let i = 0; i < queue.length; ++i) {
+  //   for (let y = 0; y < 4; y++) {
+  //     for (let x = 0; x < 4; x++) {
+  //       if (queue[i][0] & (0x8000 >> (y * 4 + x))) {
+  //         drawBlock(
+  //           windowWidth / 2 + unit * 8 + x * unit,
+  //           windowHeight / 2 - unit * 7 + (y + i * 5) * unit,
+  //           2,
+  //           255,
+  //           COLORS[queue[i][1]],
+  //           unit
+  //         );
+  //       }
+  //     }
+  //   }
+  // }
+  //////////////////////////
   drawBoard(unit, topLeft1);
   drawPlaced(unit, topLeft1, board1);
   drawCurrent(unit, position1, topLeft1, shadow1, clr1, shape1);
@@ -50,9 +129,9 @@ function display(gameState, otherPlayer) {
     let position2 = otherPlayer.position;
     let shape2 = otherPlayer.shape;
     let clr2 = otherPlayer.clr;
-    drawBoard(unit, topLeft2);
-    drawPlaced(unit, topLeft2, board2);
-    drawCurrent(unit, position2, topLeft2, shadow2, clr2, shape2);
+    drawBoard(smallUnit, topLeft2);
+    drawPlaced(smallUnit, topLeft2, board2);
+    drawCurrent(smallUnit, position2, topLeft2, shadow2, clr2, shape2);
   }
   redraw(); //re-render the canvas
 }
@@ -82,7 +161,7 @@ function drawBorder(unit, topLeft) {
 //draw the grid lines on the board
 function drawGrid(unit, topLeft) {
   strokeWeight(1);
-  stroke(150);
+  stroke(50);
 
   //Horizontal grid lines
   for (let i = 1; i < 20; i++) {
