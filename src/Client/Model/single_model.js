@@ -23,6 +23,7 @@ function newTetromino() {
 function getState() {
   return {
     board: board.elems,
+    score: board.getScore(),
     shadow: currentTetromino.getShadow(),
     position: currentTetromino.getPosition(),
     shape: currentTetromino.getState()[currentTetromino.getRotation()],
