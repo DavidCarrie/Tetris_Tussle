@@ -1,10 +1,11 @@
 let multiModel, socket;
 
 class MultiModel {
-  constructor() {
+  constructor(socket) {
     this.model = new Model();
     this.otherPlayer;
     this.players = {};
+    this.socket = socket;
   }
   getState = () => this.model.getState();
 
@@ -14,11 +15,9 @@ class MultiModel {
   };
 
   start = () => {
-    socket = io.connect("http://localhost:3000");
-    let data = this.model.getState();
-    socket.emit("start", data);
-
     this.model.start(setInterval(this.tick, 1000));
+    let data = this.model.getState();
+    this.socket.emit("start", data);
   };
 
   tick = () => {
@@ -42,17 +41,22 @@ class MultiModel {
     }
     let data = this.model.getState();
     display(data, this.otherPlayer);
-    socket.emit("update", data);
+    this.socket.emit("update", data);
   };
 }
 
 const newGame = () => {
-  multiModel = new MultiModel();
+  if (socket) {
+    socket.disconnect();
+  }
+  socket = io.connect("http://localhost:3000");
+  multiModel = new MultiModel(socket);
   multiModel.start();
   socket.on("heartbeat", function (data) {
     multiModel.players = data;
     Object.keys(multiModel.players).forEach(function (key) {
-      if (key !== socket) {
+      console.log("key", key, "socket", socket);
+      if (key !== socket.id) {
         multiModel.otherPlayer = multiModel.players[key];
       }
     });

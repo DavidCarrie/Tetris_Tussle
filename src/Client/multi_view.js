@@ -44,13 +44,6 @@ function display(gameState, otherPlayer) {
   clear();
   let unit = windowHeight / 25;
   let smallUnit = unit / 2;
-  //let topLeft = [windowWidth / 2 - 5 * unit, windowHeight / 2 - 10 * unit];
-  // let board = gameState.board;
-  // let shadow = gameState.shadow;
-  // let position = gameState.position;
-  // let shape = gameState.shape;
-  // let clr = gameState.clr;
-
   let topLeft1 = [windowWidth / 3 - 2 * unit, windowHeight / 2 - 10 * unit];
   let topLeft2 = [topLeft1[0] + 18 * unit, windowHeight / 2 - 10 * smallUnit];
 
