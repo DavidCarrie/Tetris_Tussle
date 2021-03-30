@@ -55,7 +55,7 @@ const newGame = () => {
   socket.on("heartbeat", function (data) {
     multiModel.players = data;
     Object.keys(multiModel.players).forEach(function (key) {
-      console.log("key", key, "socket", socket);
+      //console.log("key", key, "socket", socket);
       if (key !== socket.id) {
         multiModel.otherPlayer = multiModel.players[key];
       }

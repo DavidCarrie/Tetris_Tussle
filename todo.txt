@@ -1,5 +1,4 @@
 anti-cheat
-pause
 enhanced multiplayer
 instructions
 controller editor
