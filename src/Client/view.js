@@ -36,6 +36,20 @@ function start() {
   start_button.hide();
   newGame();
 }
+
+function endScreen(){
+  filter(BLUR);
+  fill(255);
+  noStroke();
+  textSize(unit * 5);
+  textAlign(CENTER);
+  text("GAME OVER", windowWidth / 2, windowHeight / 2);  
+  text(`FINAL SCORE: ${score}`, windowWidth / 2, windowHeight / 2 + unit*10);
+}
+
+function endGame(){
+  
+}
 //update the screen
 function draw() {}
 function display(gameState) {

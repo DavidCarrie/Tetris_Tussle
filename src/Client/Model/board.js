@@ -30,7 +30,7 @@ class Board {
             this.elems[y + i][x + j].filled = 1;
             this.elems[y + i][x + j].color = shape;
           } else if (y + i == 0) {
-            // newGame(); //end game here////////////
+            endGame();
           }
         }
       }
