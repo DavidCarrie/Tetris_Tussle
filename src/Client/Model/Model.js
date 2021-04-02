@@ -9,6 +9,7 @@ class Model {
     }
     this.score = 0;
     this.paused = false;
+    this.endGame = this.board.getEndGame();
     this.interval;
     this.held;
     this.previouslyHeld;
@@ -33,7 +34,13 @@ class Model {
       shape: this.tetromino.getState()[this.tetromino.getRotation()],
       clr: this.tetromino.getShape(),
       paused: this.paused,
+      endGame: this.board.getEndGame()
     };
+  }
+
+  endGame(){
+      clearInterval(this.interval);
+      this.endGame = true;
   }
 
   keyPress(key) {

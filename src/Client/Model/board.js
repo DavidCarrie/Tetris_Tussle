@@ -2,9 +2,11 @@ const ROWS = 20;
 const COLS = 10;
 //let score = 0;
 class Board {
+
   constructor() {
     // initialize an empty elems
     this.elems = [];
+    this.endGame = false;
     for (let i = 0; i < ROWS; ++i) {
       this.elems.push([]);
       for (let j = 0; j < COLS; ++j) {
@@ -16,6 +18,7 @@ class Board {
   getElems() {
     return this.elems;
   }
+
 
   addToBoard(tetromino) {
     let state = tetromino.getState();
@@ -30,7 +33,7 @@ class Board {
             this.elems[y + i][x + j].filled = 1;
             this.elems[y + i][x + j].color = shape;
           } else if (y + i == 0) {
-            endGame();
+            this.endGame = true;
           }
         }
       }
@@ -55,6 +58,10 @@ class Board {
       }
     }
     return false;
+  }
+
+  getEndGame(){
+    return this.endGame;
   }
 
   hardDrop(tetromino) {

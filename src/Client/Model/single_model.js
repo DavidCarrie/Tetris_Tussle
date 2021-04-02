@@ -13,7 +13,7 @@ const tick = () => {
     model.score += model.board.addToBoard(model.tetromino);
     if (model.tetromino.getPosition()[1] === 0 && temp === model.score) {
       clearInterval(model.interval);
-      newGame();
+      //newGame();
     }
     model.tetromino = model.queue.shift();
     model.queue.push(new Tetromino());

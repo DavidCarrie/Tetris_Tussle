@@ -7,7 +7,7 @@ const COLORS = [
   "#00ff00",
   "#ff0000",
 ];
-let backgrd, back_button, start_button;
+let backgrd, back_button, start_button, newGame_button, leaderboard_button;
 
 let unit, topLeft;
 
@@ -29,31 +29,44 @@ function setup() {
   start_button.class("canvas-btn");
   start_button.addClass("start");
   start_button.attribute("onClick", "start()");
+
+  newGame_button = createElement("a", "New Game");
+  newGame_button.position(windowWidth/4, 2*windowHeight/3);
+  newGame_button.class("canvas-btn");
+  newGame_button.addClass("start");
+  newGame_button.attribute("onClick", "start()");
+  newGame_button.hide()
+  
+
+  leaderboard_button = createElement("a", "Leaderboard");
+  leaderboard_button.position(2*windowWidth/4, 2*windowHeight/3);
+  leaderboard_button.class("canvas-btn");
+  leaderboard_button.addClass("start");
+  leaderboard_button.attribute("onClick", "start()");
+  leaderboard_button.hide()
+
   image(backgrd, 0, 0, windowWidth, windowHeight); //draw the background
+
   smooth();
 }
 function start() {
   start_button.hide();
+  newGame_button.hide();
+  leaderboard_button.hide();
+
   newGame();
 }
 
-function endScreen(){
-  filter(BLUR);
-  fill(255);
-  noStroke();
-  textSize(unit * 5);
-  textAlign(CENTER);
-  text("GAME OVER", windowWidth / 2, windowHeight / 2);  
-  text(`FINAL SCORE: ${score}`, windowWidth / 2, windowHeight / 2 + unit*10);
-}
+
 
 function endGame(){
   
 }
+
 //update the screen
 function draw() {}
 function display(gameState) {
-  let board, queue, score, shadow, position, shape, clr, paused;
+  let board, queue, score, shadow, position, shape, clr, paused, endGame;
   unit = windowHeight / 25;
   topLeft = [windowWidth / 2 - 5 * unit, windowHeight / 2 - 10 * unit];
   board = gameState.board;
@@ -65,6 +78,7 @@ function display(gameState) {
   shape = gameState.shape;
   clr = gameState.clr;
   paused = gameState.paused;
+  endGame = gameState.endGame;
 
   clear();
   image(backgrd, 0, 0, windowWidth, windowHeight); //draw the background
@@ -78,6 +92,22 @@ function display(gameState) {
     text("Paused", windowWidth / 2, windowHeight / 2);
     return;
   }
+
+  if (endGame) {
+    fill(255);
+    filter(BLUR);
+    noStroke();
+    textSize(unit * 5);
+    textAlign(CENTER);
+    text("GAME OVER", windowWidth / 2, windowHeight / 3 );  
+    text(`FINAL SCORE: ${score}`, windowWidth / 2, windowHeight / 2 );
+    newGame_button.show();
+    leaderboard_button.show();
+   
+    return;
+  }
+
+
   //draw the text
   fill(255);
   noStroke();
