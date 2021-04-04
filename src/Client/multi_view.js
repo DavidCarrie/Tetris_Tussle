@@ -42,17 +42,22 @@ function draw() {}
 
 function display(gameState, otherPlayer) {
   clear();
-  let unit = windowHeight / 25;
+  unit = windowHeight / 25;
   let smallUnit = unit / 2;
-  let topLeft1 = [windowWidth / 3 - 2 * unit, windowHeight / 2 - 10 * unit];
-  let topLeft2 = [topLeft1[0] + 18 * unit, windowHeight / 2 - 10 * smallUnit];
+  topLeft = [windowWidth / 3 - 2 * unit, windowHeight / 2 - 10 * unit];
+  let topLeft2 = [topLeft[0] + 18 * unit, windowHeight / 2 - 10 * smallUnit];
 
   //player1
-  let board1 = gameState.board;
-  let shadow1 = gameState.shadow;
-  let position1 = gameState.position;
-  let shape1 = gameState.shape;
-  let clr1 = gameState.clr;
+  let board, queue, score, shadow, position, shape, clr;
+  board = gameState.board;
+  queue = gameState.queue;
+  held = gameState.held;
+  score = gameState.score;
+  shadow = gameState.shadow;
+  position = gameState.position;
+  shape = gameState.shape;
+  clr = gameState.clr;
+
   clear();
   image(backgrd, 0, 0, windowWidth, windowHeight);
   //////////////////////////////////////////
@@ -62,59 +67,58 @@ function display(gameState, otherPlayer) {
   textSize(unit);
   textAlign(CENTER);
   //text(`Score: ${score}`, windowWidth / 2, unit);
-  text("Hold", topLeft1[0] - 4 * unit, windowHeight / 2 - unit * 2.5);
-  text("Next", topLeft1[0] + unit * 14, windowHeight / 2 - unit * 8);
+  text("Hold", topLeft[0] - 4 * unit, windowHeight / 2 - unit * 2.5);
+  text("Next", topLeft[0] + unit * 14, windowHeight / 2 - unit * 8);
 
   //draw the hold area
   fill(0);
   rectMode(CENTER);
-  rect(topLeft1[0] - 4 * unit, windowHeight / 2 - unit * 6, unit * 5, unit * 5);
+  rect(topLeft[0] - 4 * unit, windowHeight / 2 - unit * 6, unit * 5, unit * 5);
 
   //draw the held tetromino
-  // if (held != undefined) {
-  //   for (let y = 0; y < 4; y++) {
-  //     for (let x = 0; x < 4; x++) {
-  //       if (held[0] & (0x8000 >> (y * 4 + x))) {
-  //         drawBlock(
-  //           windowWidth / 2 - unit * 10 + x * unit,
-  //           windowHeight / 2 - unit * 8 + y * unit,
-  //           2,
-  //           255,
-  //           COLORS[held[1]],
-  //           unit
-  //         );
-  //       }
-  //     }
-  //   }
-  // }
+  if (held != undefined) {
+    for (let y = 0; y < 4; y++) {
+      for (let x = 0; x < 4; x++) {
+        if (held[0] & (0x8000 >> (y * 4 + x))) {
+          drawBlock(
+            topLeft[0] - 5 * unit + x * unit,
+            windowHeight / 2 - unit * 8 + y * unit,
+            2,
+            255,
+            COLORS[held[1]],
+            unit
+          );
+        }
+      }
+    }
+  }
 
   //draw the queue area
   fill(0);
   rectMode(CENTER);
   noStroke();
-  rect(topLeft1[0] + unit * 14, windowHeight / 2, unit * 5, unit * 15);
-  // //draw the queue
-  // for (let i = 0; i < queue.length; ++i) {
-  //   for (let y = 0; y < 4; y++) {
-  //     for (let x = 0; x < 4; x++) {
-  //       if (queue[i][0] & (0x8000 >> (y * 4 + x))) {
-  //         drawBlock(
-  //           windowWidth / 2 + unit * 8 + x * unit,
-  //           windowHeight / 2 - unit * 7 + (y + i * 5) * unit,
-  //           2,
-  //           255,
-  //           COLORS[queue[i][1]],
-  //           unit
-  //         );
-  //       }
-  //     }
-  //   }
-  // }
+  rect(topLeft[0] + unit * 14, windowHeight / 2, unit * 5, unit * 15);
+  //draw the queue
+  for (let i = 0; i < queue.length; ++i) {
+    for (let y = 0; y < 4; y++) {
+      for (let x = 0; x < 4; x++) {
+        if (queue[i][0] & (0x8000 >> (y * 4 + x))) {
+          drawBlock(
+            topLeft[0] + unit * 13 + x * unit,
+            windowHeight / 2 - unit * 7 + (y + i * 5) * unit,
+            2,
+            255,
+            COLORS[queue[i][1]],
+            unit
+          );
+        }
+      }
+    }
+  }
   //////////////////////////
-  drawBoard(unit, topLeft1);
-  drawPlaced(unit, topLeft1, board1);
-  drawCurrent(unit, position1, topLeft1, shadow1, clr1, shape1);
-  //console.log(otherPlayer);
+  drawBoard(unit, topLeft);
+  drawPlaced(unit, topLeft, board);
+  drawCurrent(unit, position, topLeft, shadow, clr, shape);
   if (otherPlayer != null && otherPlayer.board != null) {
     //player2
     let board2 = otherPlayer.board;
