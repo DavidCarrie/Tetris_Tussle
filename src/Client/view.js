@@ -35,15 +35,15 @@ function setup() {
   newGame_button.class("canvas-btn");
   newGame_button.addClass("start");
   newGame_button.attribute("onClick", "start()");
-  newGame_button.hide()
+  newGame_button.hide();
   
 
   leaderboard_button = createElement("a", "Leaderboard");
   leaderboard_button.position(2*windowWidth/4, 2*windowHeight/3);
   leaderboard_button.class("canvas-btn");
   leaderboard_button.addClass("start");
-  leaderboard_button.attribute("onClick", "start()");
-  leaderboard_button.hide()
+  leaderboard_button.attribute("href", "./leaderboard.html");
+  leaderboard_button.hide();
 
   image(backgrd, 0, 0, windowWidth, windowHeight); //draw the background
 
@@ -59,8 +59,16 @@ function start() {
 
 
 
-function endGame(){
-  
+function setScore(score){
+  let scores = getItem("leaderboard") || [];
+  console.log("scores", scores);
+  console.log("score", score);
+  scores.push(score);
+  scores.sort(function(a,b){return b-a});
+  if (scores.length > 10) {
+    scores.pop();
+  }
+  storeItem('leaderboard', scores);
 }
 
 //update the screen
@@ -99,6 +107,8 @@ function display(gameState) {
     noStroke();
     textSize(unit * 5);
     textAlign(CENTER);
+    
+    setScore (score);
     text("GAME OVER", windowWidth / 2, windowHeight / 3 );  
     text(`FINAL SCORE: ${score}`, windowWidth / 2, windowHeight / 2 );
     newGame_button.show();

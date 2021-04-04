@@ -1,0 +1,16 @@
+{
+  "name": "tetris_tussle",
+  "version": "1.0.0",
+  "description": "Welcome to se3xa3 2017",
+  "main": "src/Server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/Server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.cas.mcmaster.ca/carriedd/Tetris_Tussle.git"
+  },
+  "author": "",
+  "license": "ISC"
+}

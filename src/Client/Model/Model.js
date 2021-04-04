@@ -20,7 +20,14 @@ class Model {
     this.interval = interval;
   }
 
+  setEndGame(){
+    clearInterval(this.interval);
+    this.endGame = true;
+  }
   getState() {
+    if(this.board.getEndGame()){
+      this.setEndGame();
+    }
     return {
       board: this.board.elems,
       queue: this.queue.map((t) => [t.getState()[0], t.getShape()]),
@@ -34,14 +41,11 @@ class Model {
       shape: this.tetromino.getState()[this.tetromino.getRotation()],
       clr: this.tetromino.getShape(),
       paused: this.paused,
-      endGame: this.board.getEndGame()
+      endGame: this.endGame
     };
   }
 
-  endGame(){
-      clearInterval(this.interval);
-      this.endGame = true;
-  }
+  
 
   keyPress(key) {
     if (
