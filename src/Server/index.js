@@ -4,9 +4,6 @@ const app = express();
 let Player = require("./Player");
 const path = require("path");
 const publicPath = path.join(__dirname, "/../Client"); //serve the client side code
-
-let isPlaying = true; //remove this later
-
 const port = process.env.PORT || 3000;
 app.use(express.static(publicPath));
 let server = app.listen(port, () => {
@@ -16,8 +13,6 @@ app.use(express.static(publicPath));
 
 let io = socketIO(server);
 let players = {};
-
-let rooms = []; //unused for now -- need later
 
 //update the game every 30 ms
 setInterval(updateGame, 30);
@@ -37,7 +32,8 @@ io.sockets.on(
         data.shape,
         data.shadow,
         data.position,
-        data.clr
+        data.clr,
+        data.score
       );
       players[socket.id] = player;
     });
@@ -50,6 +46,7 @@ io.sockets.on(
       player.shadow = data.shadow;
       player.position = data.position;
       player.clr = data.clr;
+      player.score = data.score;
     });
 
     socket.on("disconnect", function () {
