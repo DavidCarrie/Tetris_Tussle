@@ -12,7 +12,13 @@ const COLORS = [
   "#00ff00",
   "#ff0000",
 ];
-let backgrd, back_button, start_button;
+let backgrd,
+  back_button,
+  create_button,
+  join_input,
+  submit_join_button,
+  restart_button,
+  leaderboard_button;
 
 let unit, topLeft;
 /**
@@ -34,33 +40,139 @@ function setup() {
   back_button.addClass("back");
   back_button.attribute("href", "./");
 
-  start_button = createElement("a", "Start");
-  start_button.center();
-  start_button.class("canvas-btn");
-  start_button.addClass("start");
-  start_button.attribute("onClick", "start()");
+  create_button = createElement("a", "Create");
+  create_button.position(windowWidth / 2, windowHeight / 3);
+  create_button.class("canvas-btn");
+  create_button.addClass("start");
+  create_button.attribute("onClick", "create()");
+
+  join_input = createInput("");
+  join_input.position(windowWidth / 2, windowHeight / 2);
+  join_input.addClass("join-input");
+
+  submit_join_button = createButton("JOIN");
+  submit_join_button.class("canvas-btn");
+  submit_join_button.addClass("back");
+  submit_join_button.position(windowWidth / 1.5, windowHeight / 2);
+  submit_join_button.mousePressed(joinGame);
+
+  restart_button = createElement("a", "Restart");
+  restart_button.position(windowWidth / 4, (2 * windowHeight) / 3);
+  restart_button.class("canvas-btn");
+  restart_button.addClass("start");
+  restart_button.attribute("onClick", "restart()");
+  restart_button.hide();
+
+  leaderboard_button = createElement("a", "Leaderboard");
+  leaderboard_button.position((2 * windowWidth) / 4, (2 * windowHeight) / 3);
+  leaderboard_button.class("canvas-btn");
+  leaderboard_button.addClass("start");
+  leaderboard_button.attribute("href", "./leaderboard.html");
+  leaderboard_button.hide();
+
   image(backgrd, 0, 0, windowWidth, windowHeight); //draw the background
   smooth();
 }
-/**
- * @brief Starts a new game and hides the start button.
- */
-function start() {
-  start_button.hide();
-  newGame();
+function restarting() {
+  restart_button.hide();
+  leaderboard_button.hide();
+}
+function create() {
+  create_button.hide();
+  join_input.hide();
+  submit_join_button.hide();
+  newGame("create");
+}
+function joined() {
+  create_button.hide();
+  join_input.hide();
+  submit_join_button.hide();
+}
+function joinError() {
+  clear();
+  image(backgrd, 0, 0, windowWidth, windowHeight);
+  fill(255, 0, 0);
+  stroke(255);
+  strokeWeight(2);
+  textSize(windowHeight / 10);
+  textAlign(CENTER);
+  text("Error joining the game", windowWidth / 2, windowHeight / 2);
+  redraw();
 }
 
+function joinGame() {
+  const room = join_input.value();
+  newGame("join", room);
+}
+
+function setScore(score) {
+  let scores = getItem("leaderboard") || [];
+  scores.push(score);
+  scores.sort(function (a, b) {
+    return b - a;
+  });
+  if (scores.length > 10) {
+    scores.pop();
+  }
+  storeItem("leaderboard", scores);
+}
 //update the screen
 /**
  * @brief required by proccessing (unused)
  */
 function draw() {}
+function endScreen(result = 1, score = 0) {
+  clear();
+  image(backgrd, 0, 0, windowWidth, windowHeight);
+  fill(255);
+  filter(BLUR);
+  stroke(0);
+  strokeWeight(2);
+  textSize(unit * 2);
+  textAlign(CENTER);
 
-/**
- * @brief Generates the display for the multiplayer game.
- * @param {*} gameState object holding game information of client player
- * @param {*} otherPlayer object holding game information of opposing player
- */
+  setScore(score);
+  if (result === 1) text("YOU WON", windowWidth / 2, windowHeight / 3);
+  else if (result === 0) text("YOU TIED", windowWidth / 2, windowHeight / 3);
+  else text("YOU LOST", windowWidth / 2, windowHeight / 3);
+  text(`FINAL SCORE: ${score}`, windowWidth / 2, windowHeight / 2);
+  restart_button.show();
+  leaderboard_button.show();
+
+  redraw();
+}
+function waiting(room = "") {
+  clear();
+  image(backgrd, 0, 0, windowWidth, windowHeight);
+  fill(255);
+  stroke(0);
+  strokeWeight(2);
+  textSize(windowHeight / 20);
+  textAlign(CENTER);
+  text(
+    "Go to the following site on another device: \nhttp://localhost:3000/multiplayer.html",
+    windowWidth / 2,
+    windowHeight / 5
+  );
+  text(
+    `The click JOIN and enter the following Game ID: \n${room}`,
+    windowWidth / 2,
+    windowHeight / 2
+  );
+  redraw(); //re-render the canvas
+}
+
+function countdown(num = 3) {
+  clear();
+  image(backgrd, 0, 0, windowWidth, windowHeight);
+  fill(0);
+  stroke(255);
+  strokeWeight(1);
+  textSize(windowHeight / 10);
+  textAlign(CENTER);
+  text(`Starting in ${num}`, windowWidth / 2, windowHeight / 2);
+  redraw(); //re-render the canvas
+}
 function display(gameState, otherPlayer) {
   clear();
   unit = windowHeight / 25;
@@ -79,7 +191,6 @@ function display(gameState, otherPlayer) {
   shape = gameState.shape;
   clr = gameState.clr;
 
-  clear();
   image(backgrd, 0, 0, windowWidth, windowHeight);
   //////////////////////////////////////////
   //draw the text
@@ -87,14 +198,14 @@ function display(gameState, otherPlayer) {
   noStroke();
   textSize(unit);
   textAlign(CENTER);
-  //text(`Score: ${score}`, windowWidth / 2, unit);
-  text("Hold", topLeft[0] - 4 * unit, windowHeight / 2 - unit * 2.5);
-  text("Next", topLeft[0] + unit * 14, windowHeight / 2 - unit * 8);
+  text(`Score: ${score}`, windowWidth / 2, unit);
+  text("Hold", topLeft[0] - 4 * unit, windowHeight / 2 - unit * 3.5);
+  text("Next", topLeft[0] + unit * 14, windowHeight / 2 - unit * 5);
 
   //draw the hold area
   fill(0);
   rectMode(CENTER);
-  rect(topLeft[0] - 4 * unit, windowHeight / 2 - unit * 6, unit * 5, unit * 5);
+  rect(topLeft[0] - 4 * unit, windowHeight / 2 - unit * 6, unit * 5, unit * 3);
 
   //draw the held tetromino
   if (held != undefined) {
@@ -102,8 +213,8 @@ function display(gameState, otherPlayer) {
       for (let x = 0; x < 4; x++) {
         if (held[0] & (0x8000 >> (y * 4 + x))) {
           drawBlock(
-            topLeft[0] - 5 * unit + x * unit,
-            windowHeight / 2 - unit * 8 + y * unit,
+            topLeft[0] - 6 * unit + x * unit,
+            windowHeight / 2 - unit * 7 + y * unit,
             2,
             255,
             COLORS[held[1]],
@@ -118,15 +229,15 @@ function display(gameState, otherPlayer) {
   fill(0);
   rectMode(CENTER);
   noStroke();
-  rect(topLeft[0] + unit * 14, windowHeight / 2, unit * 5, unit * 15);
+  rect(topLeft[0] + unit * 14, windowHeight / 2, unit * 5, unit * 9);
   //draw the queue
   for (let i = 0; i < queue.length; ++i) {
     for (let y = 0; y < 4; y++) {
       for (let x = 0; x < 4; x++) {
         if (queue[i][0] & (0x8000 >> (y * 4 + x))) {
           drawBlock(
-            topLeft[0] + unit * 13 + x * unit,
-            windowHeight / 2 - unit * 7 + (y + i * 5) * unit,
+            topLeft[0] + unit * 12 + x * unit,
+            windowHeight / 2 - unit * 4 + (y + i * 3) * unit,
             2,
             255,
             COLORS[queue[i][1]],
@@ -159,6 +270,7 @@ function display(gameState, otherPlayer) {
  */
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  redraw();
 }
 
 /**

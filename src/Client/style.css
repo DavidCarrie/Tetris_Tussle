@@ -152,3 +152,24 @@ a:active.btn:after {
 .start:active {
   background-color: #000064;
 }
+.join-input {
+  width: 15%;
+  box-sizing: border-box;
+  font-size: 48px;
+}
+
+.center {
+  display: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.link {
+  display: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  font-size: 45px;
+  text-align:center
+}

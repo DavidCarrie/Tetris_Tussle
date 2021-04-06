@@ -14,12 +14,15 @@ const COLS = 10;
    *
    */
 class Board {
+<<<<<<< HEAD
 
   /**
      * @brief Construct empty board.
      * @details Initializes an empty board available for a game.
      * @returns Model Object
      */
+=======
+>>>>>>> multiV2
   constructor() {
     // initialize an empty elems
     this.elems = [];
@@ -40,12 +43,16 @@ class Board {
     return this.elems;
   }
 
+<<<<<<< HEAD
   /**
      * @brief Add a tetromino to the board.
      * @param {*} tetromino Tetromino to add to the board.
      * @returns Integer representing the score calculated 
      */
+=======
+>>>>>>> multiV2
   addToBoard(tetromino) {
+    if (this.endGame === true) return 0;
     let state = tetromino.getState();
     let index = tetromino.getRotation();
     let shape = tetromino.getShape();
@@ -55,15 +62,24 @@ class Board {
       for (let j = 0; j < 4; j++) {
         if (state[index] & (0x8000 >> (i * 4 + j))) {
           if (y + i >= 1 && x + j >= 0 && x + j < 20) {
-            this.elems[y + i][x + j].filled = 1;
-            this.elems[y + i][x + j].color = shape;
-          } else if (y + i == 0) {
+            if (this.elems[y + i][x + j].filled === 1) {
+              this.endGame = true;
+            } else {
+              this.elems[y + i][x + j].filled = 1;
+              this.elems[y + i][x + j].color = shape;
+            }
+          } else if (y + i < 0) {
             this.endGame = true;
           }
         }
       }
     }
+<<<<<<< HEAD
     return this.clearLine();
+=======
+    if (!this.endGame) return this.clearLine();
+    return 0;
+>>>>>>> multiV2
   }
 
   /**
@@ -93,11 +109,15 @@ class Board {
     return false;
   }
 
+<<<<<<< HEAD
   /**
    * @brief Accessor for endGame attribute
    * @returns boolean representing if the board is in the endGame state
    */
   getEndGame(){
+=======
+  getEndGame() {
+>>>>>>> multiV2
     return this.endGame;
   }
   /**
@@ -111,10 +131,13 @@ class Board {
     return y;
   }
 
+<<<<<<< HEAD
   /** 
    * @brief Checks to see if any lines should be clered, clears them, and generates score
    * @returns Integer representing score gained
    */
+=======
+>>>>>>> multiV2
   clearLine() {
     //return score added
     let score = 0;

@@ -34,14 +34,20 @@ class Model {
    * @param {*} interval 
    */
   start(interval) {
-    //this.interval = setInterval(tick, 1000);
     this.interval = interval;
   }
+<<<<<<< HEAD
 
   /**
    * @brief sets the endGame field in the Player model to true
    */
   setEndGame(){
+=======
+  getEndGame() {
+    return this.endGame;
+  }
+  setEndGame() {
+>>>>>>> multiV2
     clearInterval(this.interval);
     this.endGame = true;
   }
@@ -50,7 +56,7 @@ class Model {
    * @returns GameState structure with: board, queue, held, score, shadow, poisition, shape, clr, paused and endGame fields.
    */
   getState() {
-    if(this.board.getEndGame()){
+    if (this.board.getEndGame()) {
       this.setEndGame();
     }
     return {
@@ -66,15 +72,18 @@ class Model {
       shape: this.tetromino.getState()[this.tetromino.getRotation()],
       clr: this.tetromino.getShape(),
       paused: this.paused,
-      endGame: this.endGame
+      endGame: this.endGame,
     };
   }
 
+<<<<<<< HEAD
   
   /**
    * @brief Handles player game controls
    * @param {*} key Button pressed
    */
+=======
+>>>>>>> multiV2
   keyPress(key) {
     if (
       key === "left" &&

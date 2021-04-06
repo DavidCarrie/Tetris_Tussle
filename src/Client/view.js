@@ -39,15 +39,14 @@ function setup() {
   start_button.attribute("onClick", "start()");
 
   newGame_button = createElement("a", "New Game");
-  newGame_button.position(windowWidth/4, 2*windowHeight/3);
+  newGame_button.position(windowWidth / 4, (2 * windowHeight) / 3);
   newGame_button.class("canvas-btn");
   newGame_button.addClass("start");
   newGame_button.attribute("onClick", "start()");
   newGame_button.hide();
-  
 
   leaderboard_button = createElement("a", "Leaderboard");
-  leaderboard_button.position(2*windowWidth/4, 2*windowHeight/3);
+  leaderboard_button.position((2 * windowWidth) / 4, (2 * windowHeight) / 3);
   leaderboard_button.class("canvas-btn");
   leaderboard_button.addClass("start");
   leaderboard_button.attribute("href", "./leaderboard.html");
@@ -68,21 +67,22 @@ function start() {
   newGame();
 }
 
-
 /**
  * @brief Add the score to the leaderboard if it is a top 10 score.
  * @param {*} score Points scored in the game
  */
-function setScore(score){
+function setScore(score) {
   let scores = getItem("leaderboard") || [];
-  console.log("scores", scores);
-  console.log("score", score);
+  // console.log("scores", scores);
+  // console.log("score", score);
   scores.push(score);
-  scores.sort(function(a,b){return b-a});
+  scores.sort(function (a, b) {
+    return b - a;
+  });
   if (scores.length > 10) {
     scores.pop();
   }
-  storeItem('leaderboard', scores);
+  storeItem("leaderboard", scores);
 }
 
 /**
@@ -125,19 +125,19 @@ function display(gameState) {
   if (endGame) {
     fill(255);
     filter(BLUR);
-    noStroke();
-    textSize(unit * 5);
+    stroke(0);
+    strokeWeight(2);
+    textSize(unit * 2);
     textAlign(CENTER);
-    
-    setScore (score);
-    text("GAME OVER", windowWidth / 2, windowHeight / 3 );  
-    text(`FINAL SCORE: ${score}`, windowWidth / 2, windowHeight / 2 );
+
+    setScore(score);
+    text("GAME OVER", windowWidth / 2, windowHeight / 3);
+    text(`FINAL SCORE: ${score}`, windowWidth / 2, windowHeight / 2);
     newGame_button.show();
     leaderboard_button.show();
-   
+
     return;
   }
-
 
   //draw the text
   fill(255);
@@ -146,16 +146,16 @@ function display(gameState) {
   textAlign(CENTER);
   text(`Score: ${score}`, windowWidth / 2, unit);
   text("Hold", windowWidth / 2 - unit * 9, windowHeight / 2 - unit * 2.5);
-  text("Next", windowWidth / 2 + unit * 9, windowHeight / 2 - unit * 8);
+  text("Next", windowWidth / 2 + unit * 9, windowHeight / 2 - unit * 5);
 
   //draw the hold area
   fill(0);
   rectMode(CENTER);
   rect(
     windowWidth / 2 - unit * 9,
-    windowHeight / 2 - unit * 6,
+    windowHeight / 2 - unit * 5,
     unit * 5,
-    unit * 5
+    unit * 3
   );
 
   //draw the held tetromino
@@ -164,8 +164,8 @@ function display(gameState) {
       for (let x = 0; x < 4; x++) {
         if (held[0] & (0x8000 >> (y * 4 + x))) {
           drawBlock(
-            windowWidth / 2 - unit * 10 + x * unit,
-            windowHeight / 2 - unit * 8 + y * unit,
+            windowWidth / 2 - unit * 11 + x * unit,
+            windowHeight / 2 - unit * 6 + y * unit,
             2,
             255,
             COLORS[held[1]],
@@ -180,15 +180,15 @@ function display(gameState) {
   fill(0);
   rectMode(CENTER);
   noStroke();
-  rect(windowWidth / 2 + unit * 9, windowHeight / 2, unit * 5, unit * 15);
+  rect(windowWidth / 2 + unit * 9, windowHeight / 2, unit * 5, unit * 9);
   //draw the queue
   for (let i = 0; i < queue.length; ++i) {
     for (let y = 0; y < 4; y++) {
       for (let x = 0; x < 4; x++) {
         if (queue[i][0] & (0x8000 >> (y * 4 + x))) {
           drawBlock(
-            windowWidth / 2 + unit * 8 + x * unit,
-            windowHeight / 2 - unit * 7 + (y + i * 5) * unit,
+            windowWidth / 2 + unit * 7 + x * unit,
+            windowHeight / 2 - unit * 4 + (y + i * 3) * unit,
             2,
             255,
             COLORS[queue[i][1]],
@@ -247,7 +247,6 @@ function display(gameState) {
 
   redraw(); //re-render the canvas
 }
-
 
 /**
  * @brief Handles browser window resizing
