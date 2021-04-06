@@ -7,7 +7,7 @@ const COLORS = [
   "#00ff00",
   "#ff0000",
 ];
-let backgrd, back_button, start_button;
+let backgrd, back_button, create_button, join_input, submit_join_button;
 
 let unit, topLeft;
 
@@ -24,22 +24,89 @@ function setup() {
   back_button.addClass("back");
   back_button.attribute("href", "./");
 
-  start_button = createElement("a", "Start");
-  start_button.center();
-  start_button.class("canvas-btn");
-  start_button.addClass("start");
-  start_button.attribute("onClick", "start()");
+  create_button = createElement("a", "Create");
+  create_button.position(windowWidth / 2, windowHeight / 3);
+  create_button.class("canvas-btn");
+  create_button.addClass("start");
+  create_button.attribute("onClick", "create()");
+
+  join_input = createInput("");
+  join_input.position(windowWidth / 2, windowHeight / 2);
+  join_input.addClass("join-input");
+
+  submit_join_button = createButton("JOIN");
+  submit_join_button.class("canvas-btn");
+  submit_join_button.addClass("back");
+  submit_join_button.position(windowWidth / 1.5, windowHeight / 2);
+  submit_join_button.mousePressed(joinGame);
+
   image(backgrd, 0, 0, windowWidth, windowHeight); //draw the background
   smooth();
 }
-function start() {
-  start_button.hide();
-  newGame();
+function create() {
+  create_button.hide();
+  join_input.hide();
+  submit_join_button.hide();
+  newGame("create");
+}
+function joined() {
+  create_button.hide();
+  join_input.hide();
+  submit_join_button.hide();
+}
+function joinError() {
+  clear();
+  image(backgrd, 0, 0, windowWidth, windowHeight);
+  fill(255, 0, 0);
+  stroke(255);
+  strokeWeight(2);
+  textSize(windowHeight / 10);
+  textAlign(CENTER);
+  text("Error joining the game", windowWidth / 2, windowHeight / 2);
+  redraw();
+}
+
+function joinGame() {
+  const room = join_input.value();
+  newGame("join", room);
 }
 
 //update the screen
 function draw() {}
 
+function waiting(room = "") {
+  clear();
+  image(backgrd, 0, 0, windowWidth, windowHeight);
+  fill(0);
+  stroke(255);
+  strokeWeight(1);
+  textSize(windowHeight / 25);
+  textAlign(CENTER);
+  text(
+    "Go to the following site on another device: \nhttp://localhost:3000/multiplayer.html",
+    windowWidth / 2,
+    windowHeight / 5
+  );
+  text(
+    `The click JOIN and enter the following Game ID: \n${room}`,
+    windowWidth / 2,
+    windowHeight / 2
+  );
+  redraw(); //re-render the canvas
+}
+
+function countdown(num = 5) {
+  console.log(num);
+  clear();
+  image(backgrd, 0, 0, windowWidth, windowHeight);
+  fill(0);
+  stroke(255);
+  strokeWeight(1);
+  textSize(windowHeight / 10);
+  textAlign(CENTER);
+  text(`Starting in ${num}`, windowWidth / 2, windowHeight / 2);
+  redraw(); //re-render the canvas
+}
 function display(gameState, otherPlayer) {
   clear();
   unit = windowHeight / 25;
@@ -58,7 +125,6 @@ function display(gameState, otherPlayer) {
   shape = gameState.shape;
   clr = gameState.clr;
 
-  clear();
   image(backgrd, 0, 0, windowWidth, windowHeight);
   //////////////////////////////////////////
   //draw the text
@@ -136,6 +202,7 @@ function display(gameState, otherPlayer) {
 //handle browser window resizing
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  redraw();
 }
 
 // draw a single square at (x, y)

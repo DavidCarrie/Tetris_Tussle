@@ -1,22 +1,26 @@
-let multiModel, socket;
+let multiModel,
+  socket,
+  countInterval,
+  countNum = 3;
 
 class MultiModel {
   constructor(socket) {
     this.model = new Model();
     this.otherPlayer;
-    this.players = {};
     this.socket = socket;
+    this.roomId;
   }
   getState = () => this.model.getState();
-
+  setRoomId = (id) => {
+    this.roomId = id;
+  };
   keyPress = (key) => {
     this.model.keyPress(key);
     display(this.getState(), this.otherPlayer);
   };
-
   start = () => {
     this.model.start(setInterval(this.tick, 1000));
-    let data = this.model.getState();
+    let data = { ...this.model.getState(), gameId: this.roomId };
     this.socket.emit("start", data);
   };
 
@@ -39,32 +43,63 @@ class MultiModel {
         this.model.board.hardDrop(this.model.tetromino)
       );
     }
-    let data = this.model.getState();
+    let data = { ...this.model.getState(), gameId: this.roomId };
     display(data, this.otherPlayer);
     this.socket.emit("update", data);
   };
 }
 
-const newGame = () => {
+const newGame = (type = "", room = "") => {
   if (socket) {
     socket.disconnect();
   }
   socket = io.connect("http://localhost:3000");
   multiModel = new MultiModel(socket);
-  multiModel.start();
+  if (type === "create") {
+    socket.emit("createGame");
+  }
+  if (type === "join") {
+    let data = { playerName: "anon", gameId: room };
+    multiModel.setRoomId(room);
+    socket.emit("joinGame", data);
+  }
+
+  socket.on("newGameCreated", function (data) {
+    multiModel.setRoomId(data.gameId);
+    waiting(data.gameId);
+  });
+
+  socket.on("beginNewGame", function () {
+    joined();
+    countInterval = setInterval(count, 1000);
+  });
+
+  socket.on("error", function () {
+    joinError();
+  });
+
+  function count() {
+    countdown(countNum--);
+    if (countNum === 0) {
+      clearInterval(countInterval);
+      multiModel.start();
+    }
+  }
+
   socket.on("heartbeat", function (data) {
-    multiModel.players = data;
-    Object.keys(multiModel.players).forEach(function (key) {
-      //console.log("key", key, "socket", socket);
-      if (key !== socket.id) {
-        multiModel.otherPlayer = multiModel.players[key];
-      }
-    });
+    multiModel.otherPlayer = data;
+    console.log(data);
+  });
+
+  socket.on("gameOver", () => {
+    if (multiModel.getState().endGame === true) {
+      //calculate who won and dc from socket
+    }
   });
 };
 
 const keyPress = (key) => {
-  if (multiModel && key !== "pause") {
+  if (multiModel && socket && key !== "pause") {
     multiModel.keyPress(key);
   }
 };

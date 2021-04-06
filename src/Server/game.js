@@ -1,16 +1,5 @@
 let io, gameSocket;
 
-function makeid(length) {
-  let result = "";
-  let characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
-
 /**
  * This function is called by index.js to initialize a new game instance.
  *
@@ -38,7 +27,7 @@ function createGame() {
   let id = makeid(5);
 
   // Look up the room ID in the Socket.IO manager object to guaruntee unique new room.
-  while (gameSocket.manager.rooms["/" + id]) {
+  while (io.of("/").adapter.rooms.get(id)) {
     id = makeid(5);
   }
 
@@ -47,6 +36,7 @@ function createGame() {
 
   // Join the Room and wait for the player(s)
   this.join(id);
+  console.log(io.of("/").adapter.rooms);
 }
 
 /**
@@ -59,17 +49,16 @@ function joinGame(data) {
   let sock = this;
 
   // Look up the room ID in the Socket.IO manager object.
-  let room = gameSocket.manager.rooms["/" + data.gameId];
-
+  let room = io.of("/").adapter.rooms.get(data.gameId);
   // If the room exists...
-  if (room != undefined && io.sockets.adapter.rooms[room].length < 2) {
+  if (room != undefined && room.size < 2) {
     // attach the socket id to the data object.
     data.mySocketId = sock.id;
 
     // Join the room
     sock.join(data.gameId);
 
-    //console.log('Player ' + data.playerName + ' joining game: ' + data.gameId );
+    console.log("Player " + data.playerName + " joining game: " + data.gameId);
 
     // Emit an event notifying the clients that the player has joined the room.
     //io.sockets.in(data.gameId).emit("playerJoinedRoom", data);
@@ -87,7 +76,7 @@ function joinGame(data) {
  */
 function playerRestart(data) {
   // Look up the room ID in the Socket.IO manager object.
-  let room = gameSocket.manager.rooms["/" + data.gameId];
+  let room = io.of("/").adapter.rooms[data.gameId];
 
   // If the room exists...
   if (room != undefined && io.sockets.adapter.rooms[room].length === 0) {
@@ -105,9 +94,12 @@ function playerRestart(data) {
 }
 
 function update(data) {
-  if (gameSocket.rooms.indexOf(data.gameId) >= 0) {
+  let room = io.of("/").adapter.rooms.get(data.gameId);
+  console.log(room);
+  console.log(gameSocket.id);
+  if (room != undefined && room.has(gameSocket.id)) {
     //if the socket is in this room, update others
-    gameSocket.to(data.gameId).emit("update", data);
+    gameSocket.to(data.gameId).emit("heartbeat", data);
   }
 }
 
