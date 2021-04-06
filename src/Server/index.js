@@ -1,3 +1,7 @@
+/**
+ * @module Server 13 Server Module
+ * @brief Handles communication between clients to provide multiplayer functionality
+ */
 const express = require("express");
 const socketIO = require("socket.io");
 const app = express();
@@ -58,6 +62,9 @@ io.sockets.on(
   }
 );
 
+/**
+ * @brief Updates clients that a game tick has occured.
+ */
 function updateGame() {
   //change this to only update players in specific rooms
   io.sockets.emit("heartbeat", players);

@@ -1,3 +1,8 @@
+/**
+ * @module MutiplayerView 7 Multiplayer View Module
+ * @brief Generates the view for the multplayer game feature.
+ */
+
 const COLORS = [
   "#00ffff",
   "#FFFF00",
@@ -10,12 +15,17 @@ const COLORS = [
 let backgrd, back_button, start_button;
 
 let unit, topLeft;
-
+/**
+ * @brief Used to set the background image in processing
+ */
 function preload() {
   backgrd = loadImage("images/bg.jpg");
 }
 
 //setup the canvas
+/**
+ * @brief Used to setup the game canvas in processing
+ */
 function setup() {
   createCanvas(windowWidth, windowHeight);
   back_button = createElement("a", "Back");
@@ -32,14 +42,25 @@ function setup() {
   image(backgrd, 0, 0, windowWidth, windowHeight); //draw the background
   smooth();
 }
+/**
+ * @brief Starts a new game and hides the start button.
+ */
 function start() {
   start_button.hide();
   newGame();
 }
 
 //update the screen
+/**
+ * @brief required by proccessing (unused)
+ */
 function draw() {}
 
+/**
+ * @brief Generates the display for the multiplayer game.
+ * @param {*} gameState object holding game information of client player
+ * @param {*} otherPlayer object holding game information of opposing player
+ */
 function display(gameState, otherPlayer) {
   clear();
   unit = windowHeight / 25;
@@ -133,12 +154,22 @@ function display(gameState, otherPlayer) {
   redraw(); //re-render the canvas
 }
 
-//handle browser window resizing
+/**
+ * @brief Handles browser window resizing
+ */
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-// draw a single square at (x, y)
+/**
+ * @brief Draws a single square at (x, y)
+ * @param {*} x X coordinate
+ * @param {*} y Y coordinate
+ * @param {*} outline Stroke Weight of the outline
+ * @param {*} strokeClr Stroke Color.
+ * @param {*} clr Color of the Tetromino
+ * @param {*} unit Length of square size
+ */
 function drawBlock(x, y, outline, strokeClr, clr, unit) {
   if (clr === "none") noFill();
   else fill(clr);
@@ -147,15 +178,22 @@ function drawBlock(x, y, outline, strokeClr, clr, unit) {
   rectMode(CORNER);
   rect(x, y, unit, unit);
 }
-
-//draw the board's border
+/**
+ * @brief Draw a side of the boarder of the game board
+ * @param {*} unit Length of a unit calculated by window size
+ * @param {*} topLeft X, Y coordinate of the top left of the board
+ */
 function drawBorder(unit, topLeft) {
   noStroke();
   fill(107, 185, 240);
   rect(topLeft[0] - unit, topLeft[1] - unit, unit * 12, unit * 22);
 }
 
-//draw the grid lines on the board
+/**
+ * @brief Draws grid lines on the board
+ * @param {*} unit Length of a unit calculated by window size
+ * @param {*} topLeft X, Y coordinate of the top left of the board
+ */
 function drawGrid(unit, topLeft) {
   strokeWeight(1);
   stroke(50);
@@ -181,7 +219,11 @@ function drawGrid(unit, topLeft) {
   }
 }
 
-//draw the game board
+/**
+ * @brief Draws the Game Board
+ * @param {*} unit Length of a unit calculated by window size
+ * @param {*} topLeft X, Y coordinate of the top left of the board
+ */
 function drawBoard(unit, topLeft) {
   rectMode(CORNER);
   noStroke();
@@ -191,6 +233,12 @@ function drawBoard(unit, topLeft) {
   drawGrid(unit, topLeft);
 }
 
+/**
+ * @brief Draws the board placed Tetrominos
+ * @param {*} unit Length of a unit calculate by window size
+ * @param {*} topLeft X, Y coordinate of the top left of the board
+ * @param {*} board Game board model
+ */
 function drawPlaced(unit, topLeft, board) {
   //draw the placed tetrominos
   for (let y = 0; y < 20; ++y) {
@@ -208,6 +256,15 @@ function drawPlaced(unit, topLeft, board) {
   }
 }
 
+/**
+ * @brief Draws the current tetromino and its shadow
+ * @param {*} unit Length of a unit calculate by window size
+ * @param {*} position X Y position of the Tetromino
+ * @param {*} topLeft X, Y coordinate of the top left of the board
+ * @param {*} shadow Y offset of the Tetromino
+ * @param {*} clr color of the Tetromino
+ * @param {*} shape Shape of the Tetromino
+ */
 function drawCurrent(unit, position, topLeft, shadow, clr, shape) {
   //draw the current tetromino and its shadow
   for (let y = 0; y < 4; y++) {

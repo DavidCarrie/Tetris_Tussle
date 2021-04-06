@@ -1,3 +1,7 @@
+/**
+ * @module Singleplayer Singleplayer View Module and Main View Module
+ * @brief Generates the Singlplayer game view.
+ */
 const COLORS = [
   "#00ffff",
   "#FFFF00",
@@ -10,12 +14,16 @@ const COLORS = [
 let backgrd, back_button, start_button, newGame_button, leaderboard_button;
 
 let unit, topLeft;
-
+/**
+ * @brief Used to load background images in processing
+ */
 function preload() {
   backgrd = loadImage("images/bg.jpg");
 }
 
-//setup the canvas
+/**
+ * @brief Used to setup the canvas in processing
+ */
 function setup() {
   createCanvas(windowWidth, windowHeight);
   back_button = createElement("a", "Back");
@@ -49,6 +57,9 @@ function setup() {
 
   smooth();
 }
+/**
+ * @brief Starts a new game and hides uneeded menu buttons.
+ */
 function start() {
   start_button.hide();
   newGame_button.hide();
@@ -58,7 +69,10 @@ function start() {
 }
 
 
-
+/**
+ * @brief Add the score to the leaderboard if it is a top 10 score.
+ * @param {*} score Points scored in the game
+ */
 function setScore(score){
   let scores = getItem("leaderboard") || [];
   console.log("scores", scores);
@@ -71,8 +85,15 @@ function setScore(score){
   storeItem('leaderboard', scores);
 }
 
-//update the screen
+/**
+ * @brief Required by processing (unused)
+ */
 function draw() {}
+/**
+ * @brief Generate the display for the game
+ * @param {*} gameState Objecting holding game information
+ * @returns Nothing. Returns only to end function early
+ */
 function display(gameState) {
   let board, queue, score, shadow, position, shape, clr, paused, endGame;
   unit = windowHeight / 25;
@@ -227,12 +248,23 @@ function display(gameState) {
   redraw(); //re-render the canvas
 }
 
-//handle browser window resizing
+
+/**
+ * @brief Handles browser window resizing
+ */
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-// draw a single square at (x, y)
+/**
+ * @brief Draws a single square at (x, y)
+ * @param {*} x X coordinate
+ * @param {*} y Y coordinate
+ * @param {*} outline Stroke Weight of the outline
+ * @param {*} strokeClr Stroke Color.
+ * @param {*} clr Color of the Tetromino
+ * @param {*} unit Length of square size
+ */
 function drawBlock(x, y, outline, strokeClr, clr, unit) {
   if (clr === "none") noFill();
   else fill(clr);
@@ -242,7 +274,11 @@ function drawBlock(x, y, outline, strokeClr, clr, unit) {
   rect(x, y, unit, unit);
 }
 
-//draw the board's border
+/**
+ * @brief Draw a side of the boarder of the game board
+ * @param {*} unit Length of a unit calculated by window size
+ * @param {*} topLeft X, Y coordinate of the top left of the board
+ */
 function drawBorder(unit, clr) {
   noStroke();
   fill(35, 35, 35);
@@ -253,7 +289,11 @@ function drawBorder(unit, clr) {
   rect(windowWidth / 2, windowHeight / 2, unit * 11, unit * 21);
 }
 
-//draw the grid lines on the board
+/**
+ * @brief Draws grid lines on the board
+ * @param {*} unit Length of a unit calculated by window size
+ * @param {*} topLeft X, Y coordinate of the top left of the board
+ */
 function drawGrid(unit) {
   strokeWeight(1);
   stroke(50);
@@ -279,7 +319,11 @@ function drawGrid(unit) {
   }
 }
 
-//draw the game board
+/**
+ * @brief Draws the Game Board
+ * @param {*} unit Length of a unit calculated by window size
+ * @param {*} topLeft X, Y coordinate of the top left of the board
+ */
 function drawBoard(unit, clr) {
   rectMode(CENTER);
   noStroke();

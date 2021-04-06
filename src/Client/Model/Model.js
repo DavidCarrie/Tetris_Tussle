@@ -1,4 +1,18 @@
+/**
+ * @module Player 10 Player Module
+ * @brief Implements the functionality required for the player module
+ */
+
+/**
+ * @class Model
+ * @brief Implements the functionality required for the player module
+ */
 class Model {
+  /**
+     * @brief Construct a new player model.
+     * @details Initializes a player model in a ready to play state
+     * @returns Model object
+     */
   constructor() {
     this.board = new Board();
     this.tetromino = new Tetromino();
@@ -15,15 +29,26 @@ class Model {
     this.previouslyHeld;
   }
 
+  /**
+   * @brief Sets the interval (tick rate) for the player
+   * @param {*} interval 
+   */
   start(interval) {
     //this.interval = setInterval(tick, 1000);
     this.interval = interval;
   }
 
+  /**
+   * @brief sets the endGame field in the Player model to true
+   */
   setEndGame(){
     clearInterval(this.interval);
     this.endGame = true;
   }
+  /**
+   * @brief Returns the GameState representation of the player
+   * @returns GameState structure with: board, queue, held, score, shadow, poisition, shape, clr, paused and endGame fields.
+   */
   getState() {
     if(this.board.getEndGame()){
       this.setEndGame();
@@ -46,7 +71,10 @@ class Model {
   }
 
   
-
+  /**
+   * @brief Handles player game controls
+   * @param {*} key Button pressed
+   */
   keyPress(key) {
     if (
       key === "left" &&

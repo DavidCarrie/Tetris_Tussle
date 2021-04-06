@@ -1,7 +1,18 @@
+/**
+ * @module Leaderboard 4 Leaderboard Module
+ * @brief Constains functionality to implement the leaderboard
+ */
+
+/**
+ * @brief Function processing uses to load the background images
+ */
 function preload() {
      backgrd = loadImage("images/bg.jpg");
   }
-  
+
+/**
+ * @brief Displays the leaderboard, including players and there respective scores. 
+ */  
 function setup() {
     createCanvas(windowWidth, windowHeight);
     back_button = createElement("a", "Back");
@@ -26,8 +37,9 @@ function setup() {
     
 }
 
-
-
+/**
+ * @brief Function required by processing (unused)
+ */
 function draw() {
 
 

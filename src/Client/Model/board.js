@@ -1,8 +1,25 @@
+/**
+ * @module Board 9 Board Module
+ * @brief Contains game state, and all functions needed to facilitate board functions
+ */
+
 const ROWS = 20;
 const COLS = 10;
 //let score = 0;
+
+ /**
+   * @class Board
+   * @brief Provides Board functionality
+   * @details  Provides functionality to model a game of tetris.
+   *
+   */
 class Board {
 
+  /**
+     * @brief Construct empty board.
+     * @details Initializes an empty board available for a game.
+     * @returns Model Object
+     */
   constructor() {
     // initialize an empty elems
     this.elems = [];
@@ -15,11 +32,19 @@ class Board {
     }
   }
 
+  /**
+     * @brief Retrieve this board's stored elements (Tetrominos).
+     * @returns List of elements (Tetrominos) stored in the board.
+     */
   getElems() {
     return this.elems;
   }
 
-
+  /**
+     * @brief Add a tetromino to the board.
+     * @param {*} tetromino Tetromino to add to the board.
+     * @returns Integer representing the score calculated 
+     */
   addToBoard(tetromino) {
     let state = tetromino.getState();
     let index = tetromino.getRotation();
@@ -38,8 +63,16 @@ class Board {
         }
       }
     }
-    return this.clearLine(y);
+    return this.clearLine();
   }
+
+  /**
+   * @brief Check if the tetromino given will collide with any board elements
+   * @param {*} tetromino Tetromino to check for collision
+   * @param {*} direction Direction the Tetromino will move
+   * @param {*} rotation Current rotation of the Tetromino
+   * @returns Boolean - True if a collision will occur
+   */
   checkCollision(tetromino, direction, rotation) {
     let tx = tetromino.getPosition()[0] + direction[0];
     let ty = tetromino.getPosition()[1] + direction[1];
@@ -60,17 +93,29 @@ class Board {
     return false;
   }
 
+  /**
+   * @brief Accessor for endGame attribute
+   * @returns boolean representing if the board is in the endGame state
+   */
   getEndGame(){
     return this.endGame;
   }
-
+  /**
+   * @brief Drops the given Tetromino vertically onto the board
+   * @param {*} tetromino Tetromino to be hard dropped
+   * @returns Integer representing height (depth) where the tetromino lands
+   */
   hardDrop(tetromino) {
     let y = 0;
     while (!this.checkCollision(tetromino, [0, y + 1], 0)) y++;
     return y;
   }
 
-  clearLine(y) {
+  /** 
+   * @brief Checks to see if any lines should be clered, clears them, and generates score
+   * @returns Integer representing score gained
+   */
+  clearLine() {
     //return score added
     let score = 0;
     let multiplier = 1;
