@@ -185,14 +185,14 @@ function display(gameState, otherPlayer) {
   noStroke();
   textSize(unit);
   textAlign(CENTER);
-  //text(`Score: ${score}`, windowWidth / 2, unit);
-  text("Hold", topLeft[0] - 4 * unit, windowHeight / 2 - unit * 2.5);
-  text("Next", topLeft[0] + unit * 14, windowHeight / 2 - unit * 8);
+  text(`Score: ${score}`, windowWidth / 2, unit);
+  text("Hold", topLeft[0] - 4 * unit, windowHeight / 2 - unit * 3.5);
+  text("Next", topLeft[0] + unit * 14, windowHeight / 2 - unit * 5);
 
   //draw the hold area
   fill(0);
   rectMode(CENTER);
-  rect(topLeft[0] - 4 * unit, windowHeight / 2 - unit * 6, unit * 5, unit * 5);
+  rect(topLeft[0] - 4 * unit, windowHeight / 2 - unit * 6, unit * 5, unit * 3);
 
   //draw the held tetromino
   if (held != undefined) {
@@ -200,8 +200,8 @@ function display(gameState, otherPlayer) {
       for (let x = 0; x < 4; x++) {
         if (held[0] & (0x8000 >> (y * 4 + x))) {
           drawBlock(
-            topLeft[0] - 5 * unit + x * unit,
-            windowHeight / 2 - unit * 8 + y * unit,
+            topLeft[0] - 6 * unit + x * unit,
+            windowHeight / 2 - unit * 7 + y * unit,
             2,
             255,
             COLORS[held[1]],
@@ -216,15 +216,15 @@ function display(gameState, otherPlayer) {
   fill(0);
   rectMode(CENTER);
   noStroke();
-  rect(topLeft[0] + unit * 14, windowHeight / 2, unit * 5, unit * 15);
+  rect(topLeft[0] + unit * 14, windowHeight / 2, unit * 5, unit * 9);
   //draw the queue
   for (let i = 0; i < queue.length; ++i) {
     for (let y = 0; y < 4; y++) {
       for (let x = 0; x < 4; x++) {
         if (queue[i][0] & (0x8000 >> (y * 4 + x))) {
           drawBlock(
-            topLeft[0] + unit * 13 + x * unit,
-            windowHeight / 2 - unit * 7 + (y + i * 5) * unit,
+            topLeft[0] + unit * 12 + x * unit,
+            windowHeight / 2 - unit * 4 + (y + i * 3) * unit,
             2,
             255,
             COLORS[queue[i][1]],
