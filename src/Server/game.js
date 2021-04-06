@@ -27,6 +27,7 @@ exports.initGame = function (sio, socket) {
   gameSocket.on("playerRestart", playerRestart);
   gameSocket.on("update", update);
   gameSocket.on("gameOver", gameOver);
+  gameSocket.on("disconnect", disconnect);
 };
 
 /**
@@ -42,7 +43,7 @@ function createGame() {
   }
 
   // Return the Room ID (gameId) and the socket ID (mySocketId) to the browser client
-  this.emit("newGameCreated", { gameId: id, mySocketId: this.id });
+  this.emit("newGameCreated", { gameId: id });
 
   // Join the Room and wait for the player(s)
   this.join(id);
@@ -111,7 +112,11 @@ function update(data) {
 }
 
 function gameOver(data) {
-  data.result === "winner"
-    ? gameSocket.to(data.gameId).emit("loser", data)
-    : gameSocket.to(data.gameId).emit("winner", data);
+  gameSocket.to(data.gameId).emit("gameOver");
+}
+
+function disconnect() {
+  if (gameSocket.rooms.length > 0) {
+    gameSocket.to(gameSocket.rooms[0]).emit("gameOver");
+  }
 }

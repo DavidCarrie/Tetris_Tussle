@@ -2,7 +2,6 @@ const ROWS = 20;
 const COLS = 10;
 //let score = 0;
 class Board {
-
   constructor() {
     // initialize an empty elems
     this.elems = [];
@@ -18,7 +17,6 @@ class Board {
   getElems() {
     return this.elems;
   }
-
 
   addToBoard(tetromino) {
     let state = tetromino.getState();
@@ -38,7 +36,7 @@ class Board {
         }
       }
     }
-    return this.clearLine(y);
+    return this.clearLine();
   }
   checkCollision(tetromino, direction, rotation) {
     let tx = tetromino.getPosition()[0] + direction[0];
@@ -60,7 +58,7 @@ class Board {
     return false;
   }
 
-  getEndGame(){
+  getEndGame() {
     return this.endGame;
   }
 
@@ -70,7 +68,7 @@ class Board {
     return y;
   }
 
-  clearLine(y) {
+  clearLine() {
     //return score added
     let score = 0;
     let multiplier = 1;
