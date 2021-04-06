@@ -164,7 +164,7 @@ const newGame = (type = "", room = "") => {
  * @param {*} key Button pressed
  */
 const keyPress = (key) => {
-  if (multiModel && socket && key !== "pause") {
+  if (multiModel && socket && key !== "pause" && countNum === 0) {
     multiModel.keyPress(key);
   }
 };

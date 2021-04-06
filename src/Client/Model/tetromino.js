@@ -1,5 +1,5 @@
 /**
- * @module Tetromino 8 Tetromino Module 
+ * @module Tetromino 8 Tetromino Module
  * @brief Implements the data structure and functions for Tetromino peices
  */
 const SHAPES = [
@@ -49,7 +49,7 @@ class Tetromino {
   }
   /**
    * @brief Returns the current rotation of this Tetromino. value * 90 degrees = rotation.
-   * @returns Integer representing rotation. 
+   * @returns Integer representing rotation.
    */
   getRotation() {
     return this.rotation;
@@ -75,9 +75,9 @@ class Tetromino {
   setShadow(shadow) {
     this.shadow = shadow + this.position[1];
   }
- /**
-  * @brief Calculates the new position of the Tetromino after a gameTick
-  */
+  /**
+   * @brief Calculates the new position of the Tetromino after a gameTick
+   */
   gameTick() {
     this.position[1] += 1;
   }
