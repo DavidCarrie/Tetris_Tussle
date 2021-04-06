@@ -90,9 +90,9 @@ io.sockets.on("connection", function (socket) {
     let room = io.of("/").adapter.rooms.get(data.gameId);
 
     // If the room exists...
-    if (room != undefined && room.size === 0) {
+    if (room == undefined || room.size === 0) {
       this.join(data.gameId);
-      this.emit("waiting");
+      this.emit("waiting", { gameId: data.gameId });
     } else if (room != undefined && room.size === 1) {
       //room full again, restart
       this.join(data.gameId);

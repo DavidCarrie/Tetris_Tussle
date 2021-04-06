@@ -7,7 +7,13 @@ const COLORS = [
   "#00ff00",
   "#ff0000",
 ];
-let backgrd, back_button, create_button, join_input, submit_join_button;
+let backgrd,
+  back_button,
+  create_button,
+  join_input,
+  submit_join_button,
+  restart_button,
+  leaderboard_button;
 
 let unit, topLeft;
 
@@ -40,8 +46,26 @@ function setup() {
   submit_join_button.position(windowWidth / 1.5, windowHeight / 2);
   submit_join_button.mousePressed(joinGame);
 
+  restart_button = createElement("a", "Restart");
+  restart_button.position(windowWidth / 4, (2 * windowHeight) / 3);
+  restart_button.class("canvas-btn");
+  restart_button.addClass("start");
+  restart_button.attribute("onClick", "restart()");
+  restart_button.hide();
+
+  leaderboard_button = createElement("a", "Leaderboard");
+  leaderboard_button.position((2 * windowWidth) / 4, (2 * windowHeight) / 3);
+  leaderboard_button.class("canvas-btn");
+  leaderboard_button.addClass("start");
+  leaderboard_button.attribute("href", "./leaderboard.html");
+  leaderboard_button.hide();
+
   image(backgrd, 0, 0, windowWidth, windowHeight); //draw the background
   smooth();
+}
+function restarting() {
+  restart_button.hide();
+  leaderboard_button.hide();
 }
 function create() {
   create_button.hide();
@@ -71,9 +95,39 @@ function joinGame() {
   newGame("join", room);
 }
 
+function setScore(score) {
+  let scores = getItem("leaderboard") || [];
+  scores.push(score);
+  scores.sort(function (a, b) {
+    return b - a;
+  });
+  if (scores.length > 10) {
+    scores.pop();
+  }
+  storeItem("leaderboard", scores);
+}
 //update the screen
 function draw() {}
+function endScreen(result = 1, score = 0) {
+  clear();
+  image(backgrd, 0, 0, windowWidth, windowHeight);
+  fill(255);
+  filter(BLUR);
+  stroke(0);
+  strokeWeight(2);
+  textSize(unit * 2);
+  textAlign(CENTER);
 
+  setScore(score);
+  if (result === 1) text("YOU WON", windowWidth / 2, windowHeight / 3);
+  else if (result === 0) text("YOU TIED", windowWidth / 2, windowHeight / 3);
+  else text("YOU LOST", windowWidth / 2, windowHeight / 3);
+  text(`FINAL SCORE: ${score}`, windowWidth / 2, windowHeight / 2);
+  restart_button.show();
+  leaderboard_button.show();
+
+  redraw();
+}
 function waiting(room = "") {
   clear();
   image(backgrd, 0, 0, windowWidth, windowHeight);
@@ -95,8 +149,7 @@ function waiting(room = "") {
   redraw(); //re-render the canvas
 }
 
-function countdown(num = 5) {
-  console.log(num);
+function countdown(num = 3) {
   clear();
   image(backgrd, 0, 0, windowWidth, windowHeight);
   fill(0);

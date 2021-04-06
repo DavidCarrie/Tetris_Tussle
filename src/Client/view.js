@@ -58,8 +58,8 @@ function start() {
 
 function setScore(score) {
   let scores = getItem("leaderboard") || [];
-  console.log("scores", scores);
-  console.log("score", score);
+  // console.log("scores", scores);
+  // console.log("score", score);
   scores.push(score);
   scores.sort(function (a, b) {
     return b - a;

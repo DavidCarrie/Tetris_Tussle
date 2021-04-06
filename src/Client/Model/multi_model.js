@@ -66,17 +66,15 @@ class MultiModel {
     let data = { ...state, gameId: this.roomId };
     display(state, this.otherPlayer);
     this.socket.emit("update", data);
-    // if (
-    //   this.otherPlayer &&
-    //   this.otherPlayer.endGame === true &&
-    //   state.endGame === true
-    // ) {
-    //   data = { gameId: this.roomId };
-    //   this.socket.emit("gameOver", data);
-    // }
   };
 }
-
+const restart = () => {
+  if (multiModel && multiModel.roomId) {
+    newGame("restart", multiModel.roomId);
+  } else {
+    window.location.replace("./index.html");
+  }
+};
 const newGame = (type = "", room = "") => {
   if (socket) {
     socket.disconnect();
@@ -85,11 +83,15 @@ const newGame = (type = "", room = "") => {
   multiModel = new MultiModel(socket);
   if (type === "create") {
     socket.emit("createGame");
-  }
-  if (type === "join") {
+  } else if (type === "join") {
     let data = { playerName: "anon", gameId: room };
     multiModel.setRoomId(room);
     socket.emit("joinGame", data);
+  } else if (type === "restart") {
+    let data = { playerName: "anon", gameId: room };
+    multiModel.setRoomId(room);
+    socket.emit("playerRestart", data);
+    restarting();
   }
 
   socket.on("newGameCreated", function (data) {
@@ -124,8 +126,13 @@ const newGame = (type = "", room = "") => {
 
   socket.on("gameOver", () => {
     socket.emit("gameOverConfirm", { gameId: multiModel.roomId });
-    console.log("game over man");
-    console.log("result", multiModel.result());
+    countNum = 3;
+    let result = multiModel.result();
+    endScreen(result, multiModel.score);
+  });
+
+  socket.on("waiting", (data) => {
+    waiting(data.gameId);
   });
 };
 
