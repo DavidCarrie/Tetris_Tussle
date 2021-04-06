@@ -152,7 +152,7 @@ const newGame = (type = "", room = "") => {
     socket.emit("gameOverConfirm", { gameId: multiModel.roomId });
     countNum = 3;
     let result = multiModel.result();
-    endScreen(result, multiModel.score);
+    endScreen(result, globalState.score);
   });
 
   socket.on("waiting", (data) => {
