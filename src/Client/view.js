@@ -1,5 +1,5 @@
 /**
- * @module Singleplayer Singleplayer View Module and Main View Module
+ * @module Singleplayer 6 Singleplayer View Module and 3 Main View Module
  * @brief Generates the Singlplayer game view.
  */
 const COLORS = [
@@ -263,7 +263,7 @@ function windowResized() {
  * @param {*} outline Stroke Weight of the outline
  * @param {*} strokeClr Stroke Color.
  * @param {*} clr Color of the Tetromino
- * @param {*} unit Length of square size
+ * @param {*} unit Length of a unit calculated by window size
  */
 function drawBlock(x, y, outline, strokeClr, clr, unit) {
   if (clr === "none") noFill();

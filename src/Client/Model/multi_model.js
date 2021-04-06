@@ -18,7 +18,6 @@ class MultiModel {
 
   /**
    * @brief returns the gameState for the player
-   * @returns 
    */
   getState = () => this.model.getState();
 
