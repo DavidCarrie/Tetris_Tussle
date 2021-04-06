@@ -7,22 +7,18 @@ const ROWS = 20;
 const COLS = 10;
 //let score = 0;
 
- /**
-   * @class Board
-   * @brief Provides Board functionality
-   * @details  Provides functionality to model a game of tetris.
-   *
-   */
+/**
+ * @class Board
+ * @brief Provides Board functionality
+ * @details  Provides functionality to model a game of tetris.
+ *
+ */
 class Board {
-<<<<<<< HEAD
-
   /**
-     * @brief Construct empty board.
-     * @details Initializes an empty board available for a game.
-     * @returns Model Object
-     */
-=======
->>>>>>> multiV2
+   * @brief Construct empty board.
+   * @details Initializes an empty board available for a game.
+   * @returns Model Object
+   */
   constructor() {
     // initialize an empty elems
     this.elems = [];
@@ -36,21 +32,18 @@ class Board {
   }
 
   /**
-     * @brief Retrieve this board's stored elements (Tetrominos).
-     * @returns List of elements (Tetrominos) stored in the board.
-     */
+   * @brief Retrieve this board's stored elements (Tetrominos).
+   * @returns List of elements (Tetrominos) stored in the board.
+   */
   getElems() {
     return this.elems;
   }
 
-<<<<<<< HEAD
   /**
-     * @brief Add a tetromino to the board.
-     * @param {*} tetromino Tetromino to add to the board.
-     * @returns Integer representing the score calculated 
-     */
-=======
->>>>>>> multiV2
+   * @brief Add a tetromino to the board.
+   * @param {*} tetromino Tetromino to add to the board.
+   * @returns Integer representing the score calculated
+   */
   addToBoard(tetromino) {
     if (this.endGame === true) return 0;
     let state = tetromino.getState();
@@ -74,12 +67,8 @@ class Board {
         }
       }
     }
-<<<<<<< HEAD
-    return this.clearLine();
-=======
     if (!this.endGame) return this.clearLine();
     return 0;
->>>>>>> multiV2
   }
 
   /**
@@ -109,15 +98,11 @@ class Board {
     return false;
   }
 
-<<<<<<< HEAD
   /**
    * @brief Accessor for endGame attribute
    * @returns boolean representing if the board is in the endGame state
    */
-  getEndGame(){
-=======
   getEndGame() {
->>>>>>> multiV2
     return this.endGame;
   }
   /**
@@ -131,13 +116,10 @@ class Board {
     return y;
   }
 
-<<<<<<< HEAD
-  /** 
+  /**
    * @brief Checks to see if any lines should be clered, clears them, and generates score
    * @returns Integer representing score gained
    */
-=======
->>>>>>> multiV2
   clearLine() {
     //return score added
     let score = 0;

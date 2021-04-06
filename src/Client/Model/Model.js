@@ -9,10 +9,10 @@
  */
 class Model {
   /**
-     * @brief Construct a new player model.
-     * @details Initializes a player model in a ready to play state
-     * @returns Model object
-     */
+   * @brief Construct a new player model.
+   * @details Initializes a player model in a ready to play state
+   * @returns Model object
+   */
   constructor() {
     this.board = new Board();
     this.tetromino = new Tetromino();
@@ -31,23 +31,15 @@ class Model {
 
   /**
    * @brief Sets the interval (tick rate) for the player
-   * @param {*} interval 
+   * @param {*} interval
    */
   start(interval) {
     this.interval = interval;
   }
-<<<<<<< HEAD
-
-  /**
-   * @brief sets the endGame field in the Player model to true
-   */
-  setEndGame(){
-=======
   getEndGame() {
     return this.endGame;
   }
   setEndGame() {
->>>>>>> multiV2
     clearInterval(this.interval);
     this.endGame = true;
   }
@@ -76,14 +68,10 @@ class Model {
     };
   }
 
-<<<<<<< HEAD
-  
   /**
    * @brief Handles player game controls
    * @param {*} key Button pressed
    */
-=======
->>>>>>> multiV2
   keyPress(key) {
     if (
       key === "left" &&
