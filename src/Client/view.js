@@ -31,15 +31,14 @@ function setup() {
   start_button.attribute("onClick", "start()");
 
   newGame_button = createElement("a", "New Game");
-  newGame_button.position(windowWidth/4, 2*windowHeight/3);
+  newGame_button.position(windowWidth / 4, (2 * windowHeight) / 3);
   newGame_button.class("canvas-btn");
   newGame_button.addClass("start");
   newGame_button.attribute("onClick", "start()");
   newGame_button.hide();
-  
 
   leaderboard_button = createElement("a", "Leaderboard");
-  leaderboard_button.position(2*windowWidth/4, 2*windowHeight/3);
+  leaderboard_button.position((2 * windowWidth) / 4, (2 * windowHeight) / 3);
   leaderboard_button.class("canvas-btn");
   leaderboard_button.addClass("start");
   leaderboard_button.attribute("href", "./leaderboard.html");
@@ -57,18 +56,18 @@ function start() {
   newGame();
 }
 
-
-
-function setScore(score){
+function setScore(score) {
   let scores = getItem("leaderboard") || [];
   console.log("scores", scores);
   console.log("score", score);
   scores.push(score);
-  scores.sort(function(a,b){return b-a});
+  scores.sort(function (a, b) {
+    return b - a;
+  });
   if (scores.length > 10) {
     scores.pop();
   }
-  storeItem('leaderboard', scores);
+  storeItem("leaderboard", scores);
 }
 
 //update the screen
@@ -104,19 +103,19 @@ function display(gameState) {
   if (endGame) {
     fill(255);
     filter(BLUR);
-    noStroke();
-    textSize(unit * 5);
+    stroke(0);
+    strokeWeight(2);
+    textSize(unit * 2);
     textAlign(CENTER);
-    
-    setScore (score);
-    text("GAME OVER", windowWidth / 2, windowHeight / 3 );  
-    text(`FINAL SCORE: ${score}`, windowWidth / 2, windowHeight / 2 );
+
+    setScore(score);
+    text("GAME OVER", windowWidth / 2, windowHeight / 3);
+    text(`FINAL SCORE: ${score}`, windowWidth / 2, windowHeight / 2);
     newGame_button.show();
     leaderboard_button.show();
-   
+
     return;
   }
-
 
   //draw the text
   fill(255);

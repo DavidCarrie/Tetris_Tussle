@@ -77,10 +77,10 @@ function draw() {}
 function waiting(room = "") {
   clear();
   image(backgrd, 0, 0, windowWidth, windowHeight);
-  fill(0);
-  stroke(255);
-  strokeWeight(1);
-  textSize(windowHeight / 25);
+  fill(255);
+  stroke(0);
+  strokeWeight(2);
+  textSize(windowHeight / 20);
   textAlign(CENTER);
   text(
     "Go to the following site on another device: \nhttp://localhost:3000/multiplayer.html",

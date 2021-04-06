@@ -19,6 +19,7 @@ class Board {
   }
 
   addToBoard(tetromino) {
+    if (this.endGame === true) return 0;
     let state = tetromino.getState();
     let index = tetromino.getRotation();
     let shape = tetromino.getShape();
@@ -28,15 +29,20 @@ class Board {
       for (let j = 0; j < 4; j++) {
         if (state[index] & (0x8000 >> (i * 4 + j))) {
           if (y + i >= 1 && x + j >= 0 && x + j < 20) {
-            this.elems[y + i][x + j].filled = 1;
-            this.elems[y + i][x + j].color = shape;
-          } else if (y + i == 0) {
+            if (this.elems[y + i][x + j].filled === 1) {
+              this.endGame = true;
+            } else {
+              this.elems[y + i][x + j].filled = 1;
+              this.elems[y + i][x + j].color = shape;
+            }
+          } else if (y + i < 0) {
             this.endGame = true;
           }
         }
       }
     }
-    return this.clearLine();
+    if (!this.endGame) return this.clearLine();
+    return 0;
   }
   checkCollision(tetromino, direction, rotation) {
     let tx = tetromino.getPosition()[0] + direction[0];

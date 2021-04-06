@@ -13,7 +13,6 @@ let server = app.listen(port, () => {
 app.use(express.static(publicPath));
 
 let io = socketIO(server);
-
 function makeid(length) {
   let result = "";
   let characters =
@@ -116,7 +115,20 @@ io.sockets.on("connection", function (socket) {
   });
 
   socket.on("gameOver", function (data) {
-    socket.to(data.gameId).emit("gameOver");
+    // Look up the room ID in the Socket.IO manager object.
+    let room = io.of("/").adapter.rooms.get(data.gameId);
+    if (room != undefined && room.has(socket.id)) {
+      io.sockets.in(data.gameId).emit("gameOver");
+      //if the socket is in this room, tell all sockets to leave the room
+      // room.forEach((sock) => io.sockets.sockets[sock].leave(data.gameId));
+    }
+  });
+
+  socket.on("gameOverConfirm", function (data) {
+    let room = io.of("/").adapter.rooms.get(data.gameId);
+    if (room != undefined && room.has(socket.id)) {
+      this.leave(data.gameId);
+    }
   });
 
   socket.on("disconnect", function () {

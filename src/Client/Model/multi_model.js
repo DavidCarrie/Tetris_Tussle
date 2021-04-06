@@ -1,7 +1,8 @@
 let multiModel,
   socket,
   countInterval,
-  countNum = 3;
+  countNum = 3,
+  globalState;
 
 class MultiModel {
   constructor(socket) {
@@ -10,42 +11,69 @@ class MultiModel {
     this.socket = socket;
     this.roomId;
   }
-  getState = () => this.model.getState();
+  getState = () => {
+    let state = this.model.getState();
+    globalState = state;
+
+    if (
+      this.otherPlayer &&
+      this.otherPlayer.endGame === true &&
+      state.endGame === true
+    ) {
+      let data = { gameId: this.roomId };
+      this.socket.emit("gameOver", data);
+    }
+    return state;
+  };
   setRoomId = (id) => {
     this.roomId = id;
   };
   keyPress = (key) => {
-    this.model.keyPress(key);
-    display(this.getState(), this.otherPlayer);
+    if (!this.model.getEndGame()) {
+      this.model.keyPress(key);
+      let state = this.getState();
+      let data = { ...state, gameId: this.roomId };
+      display(state, this.otherPlayer);
+      this.socket.emit("update", data);
+    }
   };
   start = () => {
     this.model.start(setInterval(this.tick, 1000));
-    let data = { ...this.model.getState(), gameId: this.roomId };
+    let data = { ...this.getState(), gameId: this.roomId };
     this.socket.emit("start", data);
+  };
+  result = () => {
+    let state = this.model.getState();
+    if (this.otherPlayer) {
+      if (state.score > this.otherPlayer.score) return 1;
+      else if (state.score == this.otherPlayer.score) return 0;
+      else return -1;
+    }
   };
 
   tick = () => {
     if (!this.model.board.checkCollision(this.model.tetromino, [0, 1], 0)) {
       this.model.tetromino.gameTick();
     } else {
-      let temp = this.model.score;
       this.model.score += this.model.board.addToBoard(this.model.tetromino);
-      if (
-        this.model.tetromino.getPosition()[1] === 0 &&
-        temp === this.model.score
-      ) {
-        clearInterval(this.model.interval);
-        newGame();
-      }
       this.model.tetromino = this.model.queue.shift();
       this.model.queue.push(new Tetromino());
       this.model.tetromino.setShadow(
         this.model.board.hardDrop(this.model.tetromino)
       );
     }
-    let data = { ...this.model.getState(), gameId: this.roomId };
-    display(data, this.otherPlayer);
+    let state = this.getState();
+    let data = { ...state, gameId: this.roomId };
+    display(state, this.otherPlayer);
     this.socket.emit("update", data);
+    // if (
+    //   this.otherPlayer &&
+    //   this.otherPlayer.endGame === true &&
+    //   state.endGame === true
+    // ) {
+    //   data = { gameId: this.roomId };
+    //   this.socket.emit("gameOver", data);
+    // }
   };
 }
 
@@ -87,14 +115,17 @@ const newGame = (type = "", room = "") => {
   }
 
   socket.on("heartbeat", function (data) {
+    if (globalState && globalState.endGame === true) {
+      display(globalState, data);
+    }
+
     multiModel.otherPlayer = data;
-    console.log(data);
   });
 
   socket.on("gameOver", () => {
-    if (multiModel.getState().endGame === true) {
-      //calculate who won and dc from socket
-    }
+    socket.emit("gameOverConfirm", { gameId: multiModel.roomId });
+    console.log("game over man");
+    console.log("result", multiModel.result());
   });
 };
 
