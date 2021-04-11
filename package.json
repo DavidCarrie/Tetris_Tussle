@@ -4,13 +4,17 @@
   "description": "Welcome to se3xa3 2017",
   "main": "src/Server/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node src/Server/index.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://gitlab.cas.mcmaster.ca/carriedd/Tetris_Tussle.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
 }
