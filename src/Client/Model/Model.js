@@ -2,7 +2,9 @@
  * @module Player 10 Player Module
  * @brief Implements the functionality required for the player module
  */
-
+//For mocha testing
+const Board = require('../../Client/Model/board.js');
+const Tetromino = require('../../Client/Model/tetromino.js');
 /**
  * @class Model
  * @brief Implements the functionality required for the player module
@@ -129,3 +131,4 @@ class Model {
     }
   }
 }
+module.exports = Model

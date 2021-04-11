@@ -1,6 +1,6 @@
 /**
  * @module Singleplayer 11 Singleplayer Module
- * @brief Contains class and required functions to implement a singleplayer game for the user
+ * @brief Contains required functions to implement a singleplayer game for the user
  */
 let model;
 
@@ -40,3 +40,5 @@ const keyPress = (key) => {
     display(state);
   }
 };
+
+module.exports = single_model 

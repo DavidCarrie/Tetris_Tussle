@@ -148,3 +148,4 @@ class Board {
     return score;
   }
 }
+module.exports = Board
