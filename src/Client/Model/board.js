@@ -5,8 +5,6 @@
 
 const ROWS = 20;
 const COLS = 10;
-//let score = 0;
-
 /**
  * @class Board
  * @brief Provides Board functionality
@@ -148,4 +146,4 @@ class Board {
     return score;
   }
 }
-module.exports = Board
+// module.exports = Board;

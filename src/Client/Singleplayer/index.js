@@ -1,10 +1,9 @@
-const Singleplayer = require('./singleplayer.js');
-const View = require('./view.js');
-//import sketch
-class Game {
-    static view = new p5(sketch);
-    view.newGame = Singleplayer.newGame;
+let sketch = new p5(View);
+let game = new Singleplayer();
 
+sketch.startFunc = game.newGame;
+game.display = sketch.display;
 
-
+function start() {
+  sketch.start();
 }

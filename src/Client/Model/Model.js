@@ -3,8 +3,12 @@
  * @brief Implements the functionality required for the player module
  */
 //For mocha testing
-const Board = require('../../Client/Model/board.js');
-const Tetromino = require('../../Client/Model/tetromino.js');
+// const Board = require('../../Client/Model/board.js');
+// const Tetromino = require('../../Client/Model/tetromino.js');
+
+// import { Board } from "../../Client/Model/board.js'";
+// import { Tetromino } from "../../Client/Model/tetromino.js";
+
 /**
  * @class Model
  * @brief Implements the functionality required for the player module
@@ -122,7 +126,7 @@ class Model {
         clearInterval(this.interval);
         this.paused = true;
       } else {
-        this.interval = setInterval(tick, 1000);
+        this.interval = setInterval(this.tick, 1000);
         this.paused = false;
       }
     }
@@ -131,4 +135,6 @@ class Model {
     }
   }
 }
-module.exports = Model
+// module.exports = Model;
+
+// export { Model };

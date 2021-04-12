@@ -101,6 +101,5 @@ class Tetromino {
   drop(y) {
     this.position[1] += y;
   }
-
 }
-module.exports = Tetromino
+// module.exports = Tetromino

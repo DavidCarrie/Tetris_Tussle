@@ -3,7 +3,6 @@
  * @brief Recieves and processes user keystroke input for passing to model
  */
 
-
 /**
  * @brief Maps the keyboard presses of the users for passing to model
  * @param {*} e Java script keypress event
@@ -21,6 +20,6 @@ document.body.onkeydown = function (e) {
     27: "pause",
   };
   if (typeof keys[e.keyCode] != "undefined") {
-    keyPress(keys[e.keyCode]);
+    game.keyPress(keys[e.keyCode]);
   }
 };
