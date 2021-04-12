@@ -3,7 +3,3 @@ let game = new Singleplayer();
 
 sketch.startFunc = game.newGame;
 game.display = sketch.display;
-
-function start() {
-  sketch.start();
-}

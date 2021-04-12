@@ -20,9 +20,6 @@ const View = (p) => {
     p.leaderboard_button,
     p.unit,
     p.topLeft;
-  p.setStartFunc = (func) => {
-    p.startFunc = func;
-  };
 
   /**
    * @brief Used to load background images in processing

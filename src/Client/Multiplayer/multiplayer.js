@@ -2,11 +2,13 @@
  * @module Multiplayer 12 Multiplayer Module
  * @brief Contains class and required functions to implement a multiplayer game for the user
  */
+
 let multiModel,
   socket,
   countInterval,
   countNum = 3,
-  globalState;
+  globalState,
+  sketch;
 
 /**
  * @class MultiModel
