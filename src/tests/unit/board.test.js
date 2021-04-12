@@ -1,19 +1,19 @@
 const Board = require('../../Client/Model/board.js');
 const Tetromino = require('../../Client/Model/tetromino.js');
 
-describe("Board tests", () => {
-    test("Constructor - endgame", () => {
+describe("2.1.2 Board tests", () => {
+    test("1 Constructor - endgame", () => {
         let input = new Board();
         let output = false 
         expect(input.endGame).toBe(output);
     });
-    test("getElems()", () => {
+    test("2 getElems()", () => {
         let input = new Board();
         input.elems = [];
         let output = [];
         expect(input.getElems()).toStrictEqual(output);
     });
-    test("addToBoard() - add tetromino", () => {
+    test("3 addToBoard() - add tetromino", () => {
         //create and add tetromino see if it adds.
         let input = new Board();
         let tetro = new Tetromino();
@@ -22,19 +22,19 @@ describe("Board tests", () => {
         
         expect(input.getElems()[3][3].filled).toBe(0);
     });
-    test("getEndGame()", () => {
+    test("4 getEndGame()", () => {
         let input = new Board();
         let output = false 
         expect(input.getEndGame()).toBe(output);
     });
-    test("hardDrop(tetromino)", () => {
+    test("5 hardDrop(tetromino)", () => {
         let input = new Board();
         let tetro = new Tetromino();
         //empty board, should hardrop to last row
         output = 18;
         expect(input.hardDrop(tetro)).toBe(18);
     });
-    test("clearLine()", () => {
+    test("6 clearLine()", () => {
         let input = new Board();
         //loop for 10 for columns, set up row full row and clear
         for (let j = 0; j < 10; j++){

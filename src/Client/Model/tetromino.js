@@ -102,4 +102,4 @@ class Tetromino {
     this.position[1] += y;
   }
 }
-// module.exports = Tetromino
+module.exports = Tetromino

@@ -1,4 +1,6 @@
-// import { Model } from "../Model/Model.js";
+//const Model = require('../Model/Model.js');
+//const Board = require('../Model/board.js');
+//const Tetromino = require('../Model/tetromino.js');
 /**
  * @module Singleplayer 11 Singleplayer Module
  * @brief Contains required functions to implement a singleplayer game for the user
@@ -55,4 +57,4 @@ class Singleplayer {
   };
 }
 
-// module.exports = Singleplayer;
+//module.exports = Singleplayer;

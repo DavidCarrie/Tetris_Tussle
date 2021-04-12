@@ -146,4 +146,4 @@ class Board {
     return score;
   }
 }
-// module.exports = Board;
+module.exports = Board;
