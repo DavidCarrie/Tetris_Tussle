@@ -28,47 +28,22 @@ describe("Model tests", () => {
         let output = true;
         expect(input.endGame).toBe(output);
     });
-    /*test("Constructor - endgame", () => {
-        let input = new Board();
-        let output = false 
-        expect(input.endGame).toBe(output);
+    test("getState()", () => {
+        //Test game is ended 
+        let input = new Model();
+        let in2 = input.getState();
+        let output = 0;
+        expect(in2.score).toBe(output);
     });
-    test("getElems()", () => {
-        let input = new Board();
-        input.elems = [];
-        let output = [];
-        expect(input.getElems()).toStrictEqual(output);
+    test("keyPress(key)", () => {
+        //Test game is ended 
+        let model = new Model();
+        let input = "right";
+        model.keyPress(input);
+        let output = [4, 0];
+        expect(model.tetromino.position).toStrictEqual(output);
     });
-    test("addToBoard() - add tetromino", () => {
-        //create and add tetromino see if it adds.
-        let input = new Board();
-        let tetro = new Tetromino();
-        tetro.shape = 1;
-        input.addToBoard(tetro);
-        
-        expect(input.getElems()[3][3].filled).toBe(0);
-    });
-    test("getEndGame()", () => {
-        let input = new Board();
-        let output = false 
-        expect(input.getEndGame()).toBe(output);
-    });
-    test("hardDrop(tetromino)", () => {
-        let input = new Board();
-        let tetro = new Tetromino();
-        //empty board, should hardrop to last row
-        output = 18;
-        expect(input.hardDrop(tetro)).toBe(18);
-    });
-    test("clearLine()", () => {
-        let input = new Board();
-        //loop for 10 for columns, set up row full row and clear
-        for (let j = 0; j < 10; j++){
-            input.elems[0].push({ filled: 1, color: "#000000" });
-        }
-        output = 0;
-        expect(input.clearLine()).toBe(output);
-    });
-   */
+
+    
 
 });

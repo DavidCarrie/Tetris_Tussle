@@ -14,7 +14,7 @@ const SHAPES = [
 
 /**
  * @class Tetromino
- * @brief Contains moedel and functions to implement Tetromino pieces
+ * @brief Contains model and functions to implement Tetromino pieces
  */
 class Tetromino {
   /**
